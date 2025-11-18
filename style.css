@@ -6,42 +6,41 @@ body {
   color: #e5e5e5;
 }
 
-/* HEADER – vystředěné logo + TEST pod tím */
+/* HEADER – logo + tlačítko pod sebou krásně na středu */
 header {
-  padding: 35px 20px 25px;
+  padding: 40px 20px 30px;
   background: #111;
   border-bottom: 1px solid #222;
   text-align: center;
 }
 
 .logo {
-  height: 75px;
-  width: 75px;
-  border-radius: 8px;
+  height: 150px;
+  width: 150px;
   display: block;
-  margin: 0 auto 12px auto;
+  margin: 0 auto 18px auto;
+  border-radius: 12px;
 }
 
-/* TEST tlačítko */
+/* TEST tlačítko – bílé */
 .header-test {
   display: inline-block;
-  padding: 8px 28px;
-  font-size: 17px;
+  padding: 8px 26px;
+  font-size: 18px;
   font-weight: bold;
-  color: #eaeaea;
-  text-decoration: none;
+  color: #000;
 
-  background: #1a1a1a;
-  border: 1px solid #3fa8ff;
+  background: #ffffff;
+  border: none;
   border-radius: 8px;
 
+  text-decoration: none;
   transition: 0.25s;
 }
 
 .header-test:hover {
-  background: #222;
-  border-color: #70c3ff;
-  transform: scale(1.03);
+  background: #e2e2e2;
+  transform: scale(1.05);
 }
 
 /* HERO */
@@ -123,7 +122,7 @@ header {
   transform: translateX(4px);
 }
 
-/* WHY SECTION */
+/* WHY */
 .why {
   padding: 60px 20px;
   text-align: center;
@@ -156,17 +155,18 @@ footer {
 
 /* RESPONSIVITA */
 @media (max-width: 600px) {
-  .hero h2 {
-    font-size: 28px;
-  }
 
-  .cta {
-    font-size: 18px;
-    padding: 12px 25px;
+  .logo {
+    height: 120px;
+    width: 120px;
   }
 
   .header-test {
-    font-size: 15px;
-    padding: 8px 22px;
+    font-size: 16px;
+    padding: 7px 20px;
+  }
+
+  .hero h2 {
+    font-size: 28px;
   }
 }
