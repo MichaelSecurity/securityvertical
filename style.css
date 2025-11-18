@@ -8,18 +8,18 @@ body {
 
 /* HEADER – logo vystředěné a VELKÉ */
 header {
-  padding: 40px 20px 30px;
+  padding: 50px 20px 35px;
   background: #111;
   border-bottom: 1px solid #222;
   text-align: center;
 }
 
 .logo {
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 200px;
   display: block;
   margin: 0 auto 10px auto;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
 /* HERO */
@@ -31,7 +31,7 @@ header {
 }
 
 .hero h2 {
-  font-size: 36px;
+  font-size: 38px;
   margin-bottom: 15px;
 }
 
@@ -50,16 +50,16 @@ header {
   font-weight: bold;
 }
 
-/* CTA TEST */
+/* CTA TESTOVAT */
 .cta {
   display: inline-block;
   margin-top: 35px;
   background: #3fa8ff;
-  padding: 15px 40px;
+  padding: 17px 45px;
   color: #000;
   border-radius: 10px;
   text-decoration: none;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   transition: 0.25s;
 }
@@ -132,16 +132,16 @@ footer {
 @media (max-width: 600px) {
 
   .logo {
-    height: 120px;
-    width: 120px;
+    height: 160px;
+    width: 160px;
   }
 
   .cta {
     font-size: 20px;
-    padding: 12px 30px;
+    padding: 13px 30px;
   }
 
   .hero h2 {
-    font-size: 28px;
+    font-size: 30px;
   }
 }
