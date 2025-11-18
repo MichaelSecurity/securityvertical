@@ -1,4 +1,4 @@
-/* ZÁKLADNÍ NASTAVENÍ */
+/* ZÁKLAD */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -6,43 +6,42 @@ body {
   color: #e5e5e5;
 }
 
-/* HEADER */
+/* HEADER – vystředěné logo + TEST pod tím */
 header {
-  position: relative;
-  padding: 20px;
+  padding: 35px 20px 25px;
   background: #111;
   border-bottom: 1px solid #222;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 80px;
+  text-align: center;
 }
 
 .logo {
-  height: 60px;
-  width: 60px;
+  height: 75px;
+  width: 75px;
   border-radius: 8px;
+  display: block;
+  margin: 0 auto 12px auto;
 }
 
-/* TLAČÍTKO FREE TEST */
+/* TEST tlačítko */
 .header-test {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #3fa8ff;
-  padding: 10px 18px;
-  color: #000;
+  display: inline-block;
+  padding: 8px 28px;
+  font-size: 17px;
   font-weight: bold;
-  border-radius: 8px;
+  color: #eaeaea;
   text-decoration: none;
-  font-size: 16px;
+
+  background: #1a1a1a;
+  border: 1px solid #3fa8ff;
+  border-radius: 8px;
+
   transition: 0.25s;
 }
 
 .header-test:hover {
-  background: #70c3ff;
-  transform: translateY(-50%) scale(1.05);
+  background: #222;
+  border-color: #70c3ff;
+  transform: scale(1.03);
 }
 
 /* HERO */
@@ -167,7 +166,7 @@ footer {
   }
 
   .header-test {
-    font-size: 14px;
-    padding: 8px 14px;
+    font-size: 15px;
+    padding: 8px 22px;
   }
 }
