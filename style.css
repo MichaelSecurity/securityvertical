@@ -35,7 +35,7 @@ body {
   margin: 10px auto;
 }
 
-/* HIGHLIGHT – varianta A (metal / silver) */
+/* HIGHLIGHT – stříbrná varianta */
 .hero .highlight {
   margin-top: 22px;
   font-size: 22px;
@@ -43,7 +43,7 @@ body {
   font-weight: bold;
 }
 
-/* CTA TLAČÍTKO – varianta A */
+/* CTA TLAČÍTKO – stříbrná varianta */
 .cta {
   display: inline-block;
   margin-top: 40px;
@@ -62,41 +62,34 @@ body {
   transform: scale(1.06);
 }
 
-/* FEATURES */
+/* === ČISTÝ SEZNAM (Co zkontrolujeme) === */
 .features {
-  padding: 70px 20px;
-  max-width: 900px;
+  padding: 60px 20px;
+  max-width: 700px;
   margin: auto;
+  text-align: center;
 }
 
 .features h2 {
-  text-align: center;
   margin-bottom: 30px;
   font-size: 32px;
 }
 
-.features ul {
+.clean-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.features li {
-  background: #151515;
-  padding: 20px;
-  margin: 14px 0;
-  border-radius: 8px;
-  border-left: 4px solid #bfbfbf;
+.clean-list li {
   font-size: 20px;
+  color: #d5d5d5;
+  margin: 15px 0;
+  padding: 0;
   line-height: 1.5;
-  transition: 0.2s;
 }
 
-.features li:hover {
-  background: #1a1a1a;
-  transform: translateX(4px);
-}
-
-/* WHY */
+/* WHY SEKCE */
 .why {
   padding: 60px 20px 70px;
   text-align: center;
