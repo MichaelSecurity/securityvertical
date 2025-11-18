@@ -6,20 +6,20 @@ body {
   color: #e5e5e5;
 }
 
-/* === HERO SEKCE – LOGO + TEXT V JEDNOM BLOKU === */
+/* HERO BLOK – logo + text */
 .hero {
   text-align: center;
-  padding: 70px 20px 90px;
+  padding: 60px 20px 80px;
   max-width: 900px;
   margin: auto;
 }
 
 .logo {
-  height: 200px;
-  width: 200px;
+  height: 350px;
+  width: 350px;
   display: block;
-  margin: 0 auto 25px auto;
-  border-radius: 12px;
+  margin: 0 auto 30px auto;
+  border-radius: 14px;
 }
 
 .hero h2 {
@@ -42,7 +42,7 @@ body {
   font-weight: bold;
 }
 
-/* CTA */
+/* CTA TLAČÍTKO */
 .cta {
   display: inline-block;
   margin-top: 40px;
@@ -124,8 +124,8 @@ footer {
 @media (max-width: 600px) {
 
   .logo {
-    height: 160px;
-    width: 160px;
+    height: 220px;
+    width: 220px;
   }
 
   .cta {
