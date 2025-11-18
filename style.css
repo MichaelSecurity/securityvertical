@@ -6,7 +6,7 @@ body {
   color: #e5e5e5;
 }
 
-/* HEADER – logo hezky vystředěné */
+/* HEADER – logo vystředěné a VELKÉ */
 header {
   padding: 40px 20px 30px;
   background: #111;
@@ -115,12 +115,6 @@ header {
   font-size: 18px;
   color: #d0d0d0;
   line-height: 1.6;
-}
-
-.why p.small {
-  font-size: 16px;
-  color: #b4b4b4;
-  margin-top: 10px;
 }
 
 /* FOOTER */
