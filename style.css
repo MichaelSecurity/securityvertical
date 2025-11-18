@@ -6,7 +6,7 @@ body {
   color: #e5e5e5;
 }
 
-/* HEADER – logo + tlačítko pod sebou krásně na středu */
+/* HEADER – logo hezky vystředěné */
 header {
   padding: 40px 20px 30px;
   background: #111;
@@ -18,29 +18,8 @@ header {
   height: 150px;
   width: 150px;
   display: block;
-  margin: 0 auto 18px auto;
+  margin: 0 auto 10px auto;
   border-radius: 12px;
-}
-
-/* TEST tlačítko – bílé */
-.header-test {
-  display: inline-block;
-  padding: 8px 26px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
-
-  background: #ffffff;
-  border: none;
-  border-radius: 8px;
-
-  text-decoration: none;
-  transition: 0.25s;
-}
-
-.header-test:hover {
-  background: #e2e2e2;
-  transform: scale(1.05);
 }
 
 /* HERO */
@@ -64,21 +43,23 @@ header {
   margin: 10px auto;
 }
 
-.price {
-  margin-top: 25px;
-  font-size: 22px;
-  color: #fff;
+.hero .highlight {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #3fa8ff;
+  font-weight: bold;
 }
 
+/* CTA TEST */
 .cta {
   display: inline-block;
-  margin-top: 30px;
+  margin-top: 35px;
   background: #3fa8ff;
-  padding: 15px 35px;
+  padding: 15px 40px;
   color: #000;
   border-radius: 10px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   transition: 0.25s;
 }
@@ -161,9 +142,9 @@ footer {
     width: 120px;
   }
 
-  .header-test {
-    font-size: 16px;
-    padding: 7px 20px;
+  .cta {
+    font-size: 20px;
+    padding: 12px 30px;
   }
 
   .hero h2 {
