@@ -1,1 +1,96 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d0d0f;
+  color: #e5e5e5;
+}
 
+header {
+  padding: 20px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  background: #111;
+  border-bottom: 1px solid #222;
+}
+
+.logo span {
+  color: #3fa8ff;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #cfcfcf;
+}
+
+.price {
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+.cta {
+  display: inline-block;
+  margin-top: 30px;
+  background: #3fa8ff;
+  padding: 15px 30px;
+  color: #000;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.features {
+  padding: 60px 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features li {
+  background: #151515;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border-left: 4px solid #3fa8ff;
+  font-size: 18px;
+}
+
+.why {
+  padding: 60px 20px;
+  text-align: center;
+  max-width: 800px;
+  margin: auto;
+}
+
+.why p.small {
+  font-size: 16px;
+  color: #b4b4b4;
+}
+
+footer {
+  padding: 20px;
+  text-align: center;
+  background: #111;
+  border-top: 1px solid #222;
+  margin-top: 40px;
+}
