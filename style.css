@@ -35,18 +35,19 @@ body {
   margin: 10px auto;
 }
 
+/* HIGHLIGHT – varianta A (metal / silver) */
 .hero .highlight {
   margin-top: 22px;
   font-size: 22px;
-  color: #3fa8ff;
+  color: #bfbfbf;
   font-weight: bold;
 }
 
-/* CTA TLAČÍTKO */
+/* CTA TLAČÍTKO – varianta A */
 .cta {
   display: inline-block;
   margin-top: 40px;
-  background: #3fa8ff;
+  background: #d8d8d8;
   padding: 20px 55px;
   color: #000;
   border-radius: 12px;
@@ -57,7 +58,7 @@ body {
 }
 
 .cta:hover {
-  background: #70c3ff;
+  background: #ececec;
   transform: scale(1.06);
 }
 
@@ -84,7 +85,7 @@ body {
   padding: 20px;
   margin: 14px 0;
   border-radius: 8px;
-  border-left: 4px solid #3fa8ff;
+  border-left: 4px solid #bfbfbf;
   font-size: 20px;
   line-height: 1.5;
   transition: 0.2s;
