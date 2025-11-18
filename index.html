@@ -13,11 +13,11 @@
       .then(data => {
         const country = data.country_code;
 
-        // Czech Republic + Slovakia
+        // Czech + Slovakia
         if (country === "CZ" || country === "SK") {
           window.location.href = "index-cs.html";
         }
-        // Germany + Austria + Switzerland
+        // Germany, Austria, Switzerland
         else if (country === "DE" || country === "AT" || country === "CH") {
           window.location.href = "index-de.html";
         }
@@ -25,9 +25,24 @@
         else if (country === "PL") {
           window.location.href = "index-pl.html";
         }
-        // Brazil -> Portuguese-BR
+        // Brazil
         else if (country === "BR") {
           window.location.href = "index-ptbr.html";
+        }
+        // Spanish-speaking countries
+        else if (
+          country === "ES" || country === "MX" || country === "AR" || 
+          country === "CO" || country === "CL" || country === "PE" ||
+          country === "VE" || country === "UY" || country === "EC"
+        ) {
+          window.location.href = "index-es.html";
+        }
+        // French-speaking countries
+        else if (
+          country === "FR" || country === "BE" || country === "CA" || 
+          country === "CH" || country === "LU" || country === "MC"
+        ) {
+          window.location.href = "index-fr.html";
         }
         // Default: English
         else {
@@ -48,19 +63,32 @@
       text-align: center;
       padding-top: 120px;
     }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 6px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
 <body>
   <h2>Redirecting…</h2>
-  <p>If you are not redirected automatically, please choose your language:</p>
+  <p>If you are not redirected automatically, choose your language:</p>
 
   <p>
     <a href="index-cs.html">Čeština</a> •
     <a href="index-en.html">English</a> •
     <a href="index-de.html">Deutsch</a> •
     <a href="index-pl.html">Polski</a> •
-    <a href="index-ptbr.html">Português (Brasil)</a>
+    <a href="index-ptbr.html">Português (BR)</a> •
+    <a href="index-es.html">Español</a> •
+    <a href="index-fr.html">Français</a>
   </p>
 </body>
 </html>
