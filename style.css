@@ -6,20 +6,20 @@ body {
   color: #e5e5e5;
 }
 
-/* HEADER – logo vystředěné a VELKÉ */
+/* HEADER – logo vystředěné a MEGA VELKÉ */
 header {
-  padding: 50px 20px 35px;
+  padding: 60px 20px 40px;
   background: #111;
   border-bottom: 1px solid #222;
   text-align: center;
 }
 
 .logo {
-  height: 200px;
-  width: 200px;
+  height: 260px;
+  width: 260px;
   display: block;
-  margin: 0 auto 10px auto;
-  border-radius: 14px;
+  margin: 0 auto 15px auto;
+  border-radius: 16px;
 }
 
 /* HERO */
@@ -31,21 +31,21 @@ header {
 }
 
 .hero h2 {
-  font-size: 38px;
+  font-size: 42px;
   margin-bottom: 15px;
 }
 
 .hero p {
-  font-size: 18px;
+  font-size: 20px;
   color: #cfcfcf;
   line-height: 1.6;
-  max-width: 700px;
+  max-width: 800px;
   margin: 10px auto;
 }
 
 .hero .highlight {
-  margin-top: 20px;
-  font-size: 20px;
+  margin-top: 22px;
+  font-size: 22px;
   color: #3fa8ff;
   font-weight: bold;
 }
@@ -53,25 +53,25 @@ header {
 /* CTA TESTOVAT */
 .cta {
   display: inline-block;
-  margin-top: 35px;
+  margin-top: 40px;
   background: #3fa8ff;
-  padding: 17px 45px;
+  padding: 20px 55px;
   color: #000;
-  border-radius: 10px;
+  border-radius: 12px;
   text-decoration: none;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   transition: 0.25s;
 }
 
 .cta:hover {
   background: #70c3ff;
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 /* FEATURES */
 .features {
-  padding: 60px 20px;
+  padding: 70px 20px;
   max-width: 900px;
   margin: auto;
 }
@@ -79,7 +79,7 @@ header {
 .features h2 {
   text-align: center;
   margin-bottom: 30px;
-  font-size: 30px;
+  font-size: 32px;
 }
 
 .features ul {
@@ -89,12 +89,12 @@ header {
 
 .features li {
   background: #151515;
-  padding: 18px;
-  margin: 12px 0;
+  padding: 20px;
+  margin: 14px 0;
   border-radius: 8px;
   border-left: 4px solid #3fa8ff;
-  font-size: 18px;
-  line-height: 1.4;
+  font-size: 20px;
+  line-height: 1.5;
   transition: 0.2s;
 }
 
@@ -105,14 +105,14 @@ header {
 
 /* WHY */
 .why {
-  padding: 60px 20px;
+  padding: 60px 20px 70px;
   text-align: center;
   max-width: 900px;
   margin: auto;
 }
 
 .why p {
-  font-size: 18px;
+  font-size: 20px;
   color: #d0d0d0;
   line-height: 1.6;
 }
@@ -132,16 +132,16 @@ footer {
 @media (max-width: 600px) {
 
   .logo {
-    height: 160px;
-    width: 160px;
+    height: 180px;
+    width: 180px;
   }
 
   .cta {
-    font-size: 20px;
-    padding: 13px 30px;
+    font-size: 22px;
+    padding: 16px 35px;
   }
 
   .hero h2 {
-    font-size: 30px;
+    font-size: 32px;
   }
 }
