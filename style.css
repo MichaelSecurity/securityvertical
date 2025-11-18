@@ -32,21 +32,13 @@ body {
   color: #cfcfcf;
   line-height: 1.6;
   max-width: 800px;
-  margin: 10px auto;
-}
-
-/* HIGHLIGHT – stříbrná varianta */
-.hero .highlight {
-  margin-top: 22px;
-  font-size: 22px;
-  color: #bfbfbf;
-  font-weight: bold;
+  margin: 10px auto 30px auto;
 }
 
 /* CTA TLAČÍTKO – stříbrná varianta */
 .cta {
   display: inline-block;
-  margin-top: 40px;
+  margin-top: 10px;
   background: #d8d8d8;
   padding: 20px 55px;
   color: #000;
