@@ -1,191 +1,263 @@
-// SecurityVertical – frontend kontrola připojení
-console.log("SecurityVertical frontend loaded");
+// SecurityVertical – multi-language frontend
+console.log("SecurityVertical – multi language version loaded");
 
-// URL na backend (Bun / Railway)
-const API_URL = "https://function-bun-production-6014.up.railway.app/api/security-check";
 
-// Pomocná funkce: zjednodušený název prohlížeče + OS
-function detectBrowserSummary(uaString) {
-  const ua = uaString || navigator.userAgent || "";
-  let browser = "Neznámý prohlížeč";
-  let os = "Neznámý systém";
+// ======================================================
+// 🌍 Texty podle jazyka stránky
+// ======================================================
+function getTexts() {
+    const lang = document.documentElement.lang || "en";
 
-  // OS
-  if (/Windows NT/i.test(ua)) os = "Windows";
-  else if (/Mac OS X/i.test(ua)) os = "macOS";
-  else if (/Android/i.test(ua)) os = "Android";
-  else if (/iPhone|iPad|iPod/i.test(ua)) os = "iOS";
-  else if (/Linux/i.test(ua)) os = "Linux";
+    const t = {
+        cs: {
+            loading: "Probíhá bezpečnostní kontrola…",
+            title: "🔍 Výsledek bezpečnostní kontroly",
+            ip: "IP adresa",
+            country: "Stát",
+            city: "Město",
+            isp: "Poskytovatel",
+            vpn: "VPN",
+            risk: "Bezpečnostní riziko",
+            device: "Zařízení",
+            browser: "Prohlížeč",
+            vpn_yes: "ANO",
+            vpn_no: "NE",
+            risk_low: "NÍZKÉ – vše v pořádku 👍",
+            risk_mid: "STŘEDNÍ – doporučujeme zkontrolovat nastavení ⚠️",
+            risk_high: "VYSOKÉ – riziko ohrožení soukromí 🚨",
+            close: "Zavřít"
+        },
 
-  // Browser
-  if (/Edg\//i.test(ua)) browser = "Microsoft Edge";
-  else if (/OPR\//i.test(ua) || /Opera/i.test(ua)) browser = "Opera";
-  else if (/Firefox\//i.test(ua)) browser = "Mozilla Firefox";
-  else if (/Chrome\//i.test(ua) && !/Edg\//i.test(ua) && !/OPR\//i.test(ua)) browser = "Google Chrome";
-  else if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua) && !/Chromium\//i.test(ua)) browser = "Safari";
+        en: {
+            loading: "Running security check…",
+            title: "🔍 Security Check Result",
+            ip: "IP Address",
+            country: "Country",
+            city: "City",
+            isp: "Provider",
+            vpn: "VPN",
+            risk: "Security Risk",
+            device: "Device",
+            browser: "Browser",
+            vpn_yes: "YES",
+            vpn_no: "NO",
+            risk_low: "LOW – everything looks good 👍",
+            risk_mid: "MEDIUM – consider reviewing settings ⚠️",
+            risk_high: "HIGH – privacy at risk 🚨",
+            close: "Close"
+        },
 
-  return `${browser} (${os})`;
+        de: {
+            loading: "Sicherheitsprüfung läuft…",
+            title: "🔍 Ergebnis der Sicherheitsprüfung",
+            ip: "IP Adresse",
+            country: "Land",
+            city: "Stadt",
+            isp: "Anbieter",
+            vpn: "VPN",
+            risk: "Sicherheitsrisiko",
+            device: "Gerät",
+            browser: "Browser",
+            vpn_yes: "JA",
+            vpn_no: "NEIN",
+            risk_low: "NIEDRIG – alles in Ordnung 👍",
+            risk_mid: "MITTEL – Einstellungen prüfen ⚠️",
+            risk_high: "HOCH – Datenschutz gefährdet 🚨",
+            close: "Schließen"
+        },
+
+        es: {
+            loading: "Realizando verificación de seguridad…",
+            title: "🔍 Resultado de la verificación",
+            ip: "Dirección IP",
+            country: "País",
+            city: "Ciudad",
+            isp: "Proveedor",
+            vpn: "VPN",
+            risk: "Riesgo de seguridad",
+            device: "Dispositivo",
+            browser: "Navegador",
+            vpn_yes: "SÍ",
+            vpn_no: "NO",
+            risk_low: "BAJO – todo está en orden 👍",
+            risk_mid: "MEDIO – revisa tu configuración ⚠️",
+            risk_high: "ALTO – riesgo para tu privacidad 🚨",
+            close: "Cerrar"
+        },
+
+        fr: {
+            loading: "Analyse de sécurité en cours…",
+            title: "🔍 Résultat de l'analyse",
+            ip: "Adresse IP",
+            country: "Pays",
+            city: "Ville",
+            isp: "Fournisseur",
+            vpn: "VPN",
+            risk: "Risque de sécurité",
+            device: "Appareil",
+            browser: "Navigateur",
+            vpn_yes: "OUI",
+            vpn_no: "NON",
+            risk_low: "FAIBLE – tout est correct 👍",
+            risk_mid: "MOYEN – vérifiez vos paramètres ⚠️",
+            risk_high: "ÉLEVÉ – risque pour la vie privée 🚨",
+            close: "Fermer"
+        },
+
+        pl: {
+            loading: "Trwa kontrola bezpieczeństwa…",
+            title: "🔍 Wynik kontroli",
+            ip: "Adres IP",
+            country: "Kraj",
+            city: "Miasto",
+            isp: "Dostawca",
+            vpn: "VPN",
+            risk: "Ryzyko bezpieczeństwa",
+            device: "Urządzenie",
+            browser: "Przeglądarka",
+            vpn_yes: "TAK",
+            vpn_no: "NIE",
+            risk_low: "NISKIE – wszystko w porządku 👍",
+            risk_mid: "ŚREDNIE – sprawdź ustawienia ⚠️",
+            risk_high: "WYSOKIE – zagrożenie prywatności 🚨",
+            close: "Zamknij"
+        },
+
+        "pt-BR": {
+            loading: "Executando verificação de segurança…",
+            title: "🔍 Resultado da verificação",
+            ip: "Endereço IP",
+            country: "País",
+            city: "Cidade",
+            isp: "Provedor",
+            vpn: "VPN",
+            risk: "Risco de segurança",
+            device: "Dispositivo",
+            browser: "Navegador",
+            vpn_yes: "SIM",
+            vpn_no: "NÃO",
+            risk_low: "BAIXO – tudo certo 👍",
+            risk_mid: "MÉDIO – revise suas configurações ⚠️",
+            risk_high: "ALTO – risco para sua privacidade 🚨",
+            close: "Fechar"
+        }
+    };
+
+    return t[lang] || t.en;
 }
 
-// Pomocná funkce: lokalizovaný text rizika
-function getRiskText(lang, risk) {
-  const level = (risk || "unknown").toLowerCase();
-  let l = lang.toLowerCase();
-  if (l.startsWith("pt")) l = "pt";
-  if (l.startsWith("en")) l = "en";
-  if (l.startsWith("de")) l = "de";
-  if (l.startsWith("es")) l = "es";
-  if (l.startsWith("fr")) l = "fr";
-  if (l.startsWith("pl")) l = "pl";
-  if (l.startsWith("cs")) l = "cs";
 
-  const texts = {
-    cs: {
-      low: "Bezpečné připojení – nic zásadního nevypadá rizikově.",
-      medium: "Zvýšené riziko – buď opatrný, zvaž lepší zabezpečení.",
-      high: "Vysoké riziko – doporučujeme co nejdříve řešit zabezpečení.",
-      unknown: "Nelze přesně vyhodnotit riziko."
-    },
-    en: {
-      low: "Connection looks safe – nothing critical detected.",
-      medium: "Elevated risk – consider improving your security.",
-      high: "High risk – we recommend securing your connection as soon as possible.",
-      unknown: "Risk could not be evaluated precisely."
-    },
-    de: {
-      low: "Verbindung wirkt sicher – keine kritischen Probleme erkannt.",
-      medium: "Erhöhtes Risiko – überlegen Sie, die Sicherheit zu verbessern.",
-      high: "Hohes Risiko – wir empfehlen, die Sicherheit schnell zu erhöhen.",
-      unknown: "Risiko konnte nicht genau bewertet werden."
-    },
-    es: {
-      low: "La conexión parece segura, no se detectan riesgos críticos.",
-      medium: "Riesgo elevado – se recomienda mejorar la seguridad.",
-      high: "Riesgo alto – es recomendable reforzar la seguridad cuanto antes.",
-      unknown: "No se pudo evaluar el riesgo con precisión."
-    },
-    fr: {
-      low: "La connexion semble sûre – aucun risque critique détecté.",
-      medium: "Risque élevé – pensez à renforcer votre sécurité.",
-      high: "Risque important – il est conseillé d’améliorer la sécurité au plus vite.",
-      unknown: "Impossible d’évaluer précisément le risque."
-    },
-    pl: {
-      low: "Połączenie wydaje się bezpieczne – brak krytycznych zagrożeń.",
-      medium: "Podwyższone ryzyko – warto poprawić zabezpieczenia.",
-      high: "Wysokie ryzyko – zalecamy jak najszybsze zwiększenie ochrony.",
-      unknown: "Nie udało się dokładnie ocenić ryzyka."
-    },
-    pt: {
-      low: "A conexão parece segura – nenhum risco crítico detectado.",
-      medium: "Risco elevado – considere melhorar sua segurança.",
-      high: "Risco alto – recomendamos reforçar a segurança o quanto antes.",
-      unknown: "Não foi possível avaliar o risco com precisão."
-    }
-  };
+// ======================================================
+// 🧠 Helper – bezpečné hodnoty
+// ======================================================
+const safe = v => v ? v : "—";
 
-  const dict = texts[l] || texts.en;
-  return dict[level] || dict.unknown;
+
+// ======================================================
+// 🔍 Detekce prohlížeče
+// ======================================================
+function detectBrowser() {
+    const ua = navigator.userAgent;
+    if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("Firefox")) return "Firefox";
+    if (ua.includes("Edg")) return "Microsoft Edge";
+    if (ua.includes("OPR")) return "Opera";
+    return "Unknown";
 }
 
-// Vytvoření modálního okna s výsledky
-function createResultModal(data) {
-  const lang = document.documentElement.lang || "cs";
-  const browserSummary = detectBrowserSummary(data.userAgent || "");
-  const riskText = getRiskText(lang, data.risk);
 
-  // Překlad ANO/NE/Neznámé pro VPN
-  let vpnLabel = "Neznámé";
-  if (data.vpn === true) vpnLabel = "ANO";
-  else if (data.vpn === false) vpnLabel = "NE";
+// ======================================================
+// 🟥 MODAL (hezké popup okno)
+// ======================================================
+function showModal(html) {
+    let old = document.getElementById("sv-modal");
+    if (old) old.remove();
 
-  // Překlad labelů IP, stát… necháme v češtině (primární jazyk projektu)
-  const overlay = document.createElement("div");
-  overlay.style.position = "fixed";
-  overlay.style.inset = "0";
-  overlay.style.background = "rgba(0, 0, 0, 0.75)";
-  overlay.style.display = "flex";
-  overlay.style.alignItems = "center";
-  overlay.style.justifyContent = "center";
-  overlay.style.zIndex = "9999";
-
-  const card = document.createElement("div");
-  card.style.background = "#101010";
-  card.style.color = "#ffffff";
-  card.style.padding = "26px 22px 30px";
-  card.style.borderRadius = "18px";
-  card.style.maxWidth = "420px";
-  card.style.width = "90%";
-  card.style.boxShadow = "0 18px 45px rgba(0,0,0,0.65)";
-  card.style.fontFamily = "Arial, sans-serif";
-
-  const title = document.createElement("h2");
-  title.innerText = "Výsledek kontroly";
-  title.style.marginTop = "0";
-  title.style.marginBottom = "18px";
-  title.style.textAlign = "center";
-  title.style.fontSize = "26px";
-
-  const list = document.createElement("div");
-  list.style.fontSize = "16px";
-  list.style.lineHeight = "1.6";
-
-  function addRow(label, value) {
-    const row = document.createElement("p");
-    row.style.margin = "4px 0";
-    row.innerHTML = `<strong>${label}</strong> ${value}`;
-    list.appendChild(row);
-  }
-
-  addRow("IP:", data.ip || "Neznámé");
-  addRow("Stát:", data.country || "Neznámé");
-  addRow("Město:", data.city || "Neznámé");
-  addRow("ISP:", data.isp || "Neznámé");
-  addRow("VPN:", vpnLabel);
-  addRow("Riziko:", (data.risk || "unknown") + " – " + riskText);
-  addRow("Zařízení:", data.platform || "Neznámé");
-  addRow("Prohlížeč:", browserSummary);
-
-  const closeBtn = document.createElement("button");
-  closeBtn.innerText = "Zavřít";
-  closeBtn.style.marginTop = "22px";
-  closeBtn.style.display = "block";
-  closeBtn.style.marginLeft = "auto";
-  closeBtn.style.marginRight = "auto";
-  closeBtn.style.padding = "10px 30px";
-  closeBtn.style.borderRadius = "10px";
-  closeBtn.style.border = "none";
-  closeBtn.style.background = "#e5e5e5";
-  closeBtn.style.color = "#000";
-  closeBtn.style.fontWeight = "bold";
-  closeBtn.style.cursor = "pointer";
-  closeBtn.onclick = () => document.body.removeChild(overlay);
-
-  card.appendChild(title);
-  card.appendChild(list);
-  card.appendChild(closeBtn);
-  overlay.appendChild(card);
-  document.body.appendChild(overlay);
+    const modal = document.createElement("div");
+    modal.id = "sv-modal";
+    modal.style = `
+        position: fixed;
+        top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.65);
+        display:flex; align-items:center; justify-content:center;
+        z-index: 999999;
+    `;
+    modal.innerHTML = `
+        <div style="
+            background:#111; padding:25px 30px;
+            border-radius:14px; max-width:420px; width:90%;
+            color:#eee; font-family:Arial; line-height:1.55;
+            box-shadow:0 0 25px rgba(0,0,0,0.45);
+        ">
+            ${html}
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
-// Hlavní funkce – volaná po kliknutí na „TESTOVAT“
+
+// ======================================================
+// 🚀 HLAVNÍ FUNKCE – spustí test
+// ======================================================
 async function runSecurityTest() {
-  try {
-    const resp = await fetch(API_URL);
-    if (!resp.ok) {
-      alert("Server momentálně neodpovídá.");
-      return;
-    }
-    const data = await resp.json();
 
-    if (!data || data.success === false) {
-      alert("Chyba při zpracování odpovědi serveru.");
-      return;
+    const tx = getTexts();
+    alert(tx.loading);
+
+    let data;
+
+    try {
+        const res = await fetch(
+            "https://function-bun-production-6014.up.railway.app/api/security-check",
+            { cache: "no-store" }
+        );
+
+        try {
+            data = await res.json();
+        } catch (e) {
+            alert("Server error – invalid response.");
+            return;
+        }
+
+    } catch (e) {
+        alert("Server momentálně neodpovídá.");
+        return;
     }
 
-    createResultModal(data);
-  } catch (err) {
-    console.error(err);
-    alert("Něco se pokazilo při komunikaci se serverem.");
-  }
+    if (!data || !data.success) {
+        alert("Chybná odpověď serveru.");
+        return;
+    }
+
+    const browserPretty = detectBrowser();
+
+    let riskLabel =
+        data.risk <= 2 ? tx.risk_low :
+        data.risk == 3 ? tx.risk_mid :
+        tx.risk_high;
+
+    showModal(`
+        <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
+
+        <b>${tx.ip}:</b> ${safe(data.ip)}<br>
+        <b>${tx.country}:</b> ${safe(data.country)}<br>
+        <b>${tx.city}:</b> ${safe(data.city)}<br>
+        <b>${tx.isp}:</b> ${safe(data.isp)}<br><br>
+
+        <b>${tx.vpn}:</b> ${data.vpn ? tx.vpn_yes : tx.vpn_no}<br>
+        <b>${tx.risk}:</b> ${riskLabel}<br><br>
+
+        <b>${tx.device}:</b> ${safe(data.platform)}<br>
+        <b>${tx.browser}:</b> ${browserPretty}<br><br>
+
+        <button onclick="document.getElementById('sv-modal').remove();" 
+          style="
+            background:#d8d8d8; color:#000; font-weight:bold;
+            border:none; padding:12px 22px; border-radius:10px;
+            cursor:pointer;
+        ">
+          ${tx.close}
+        </button>
+    `);
 }
