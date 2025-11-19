@@ -11,7 +11,10 @@ console.log("SecurityVertical – FINAL version loaded");
 // 🌍 Language dictionary
 // =======================================================
 function getTexts() {
-    const lang = document.documentElement.lang || "en";
+
+    // ⭐ FIX: normalizace jazyků (de-DE → de, pt-BR → pt)
+    let rawLang = (document.documentElement.lang || "en").toLowerCase();
+    let lang = rawLang.split("-")[0];
 
     const t = {
         cs: {
@@ -110,7 +113,7 @@ function hideLoader() {
 
 
 // =======================================================
-// 🟥 Modal – always centered, perfect on iPhone
+// 🟥 Modal – always centered
 // =======================================================
 function showModal(html) {
     const old = document.getElementById("sv-modal");
@@ -148,35 +151,22 @@ function showModal(html) {
 
 
 // =======================================================
-// 🧩 Risk engine (REALISTIC)
+// 🧩 Risk engine (REAL, NON-FAKE)
 // =======================================================
 function computeRisk(data, tx) {
 
-    // TOR / VPN / PROXY = anonymous, not danger
     if (data.vpn || data.tor || data.proxy) {
-        return {
-            label: tx.anon,
-            level: "anon"
-        };
+        return { label: tx.anon, level: "anon" };
     }
 
-    // Data center = medium risk
     if (data.is_hosting) {
-        return {
-            label: tx.risk_mid,
-            level: "mid"
-        };
+        return { label: tx.risk_mid, level: "mid" };
     }
 
-    // Bad reputation IP
     if (data.reputation && data.reputation === "bad") {
-        return {
-            label: tx.risk_high,
-            level: "high"
-        };
+        return { label: tx.risk_high, level: "high" };
     }
 
-    // Normal:
     if (data.risk <= 2) return { label: tx.risk_low, level: "low" };
     if (data.risk === 3) return { label: tx.risk_mid, level: "mid" };
     return { label: tx.risk_high, level: "high" };
