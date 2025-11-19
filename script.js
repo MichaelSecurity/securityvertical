@@ -3,7 +3,7 @@ console.log("SecurityVertical – multi language version loaded");
 
 
 // ======================================================
-// 🌍 Texty podle jazyka stránky
+// 🌍 Texty podle jazyka
 // ======================================================
 function getTexts() {
     const lang = document.documentElement.lang || "en";
@@ -22,7 +22,7 @@ function getTexts() {
             browser: "Prohlížeč",
             vpn_yes: "ANO",
             vpn_no: "NE",
-            risk_low: "NÍZKÉ – vše v pořádku 👍",
+            risk_low: "NÍZKÉ – připojení je v pořádku 👍",
             risk_mid: "STŘEDNÍ – doporučujeme zkontrolovat nastavení ⚠️",
             risk_high: "VYSOKÉ – riziko ohrožení soukromí 🚨",
             close: "Zavřít"
@@ -148,7 +148,7 @@ function getTexts() {
 
 
 // ======================================================
-// 🧠 Helper – bezpečné hodnoty
+// 🧠 Helper
 // ======================================================
 const safe = v => v ? v : "—";
 
@@ -158,85 +158,105 @@ const safe = v => v ? v : "—";
 // ======================================================
 function detectBrowser() {
     const ua = navigator.userAgent;
-    if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
-    if (ua.includes("Chrome")) return "Chrome";
-    if (ua.includes("Firefox")) return "Firefox";
-    if (ua.includes("Edg")) return "Microsoft Edge";
-    if (ua.includes("OPR")) return "Opera";
+
+    if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) return "Safari";
+    if (/Chrome/i.test(ua)) return "Chrome";
+    if (/Firefox/i.test(ua)) return "Firefox";
+    if (/Edg/i.test(ua)) return "Microsoft Edge";
+    if (/OPR/i.test(ua)) return "Opera";
+
     return "Unknown";
 }
 
 
 // ======================================================
-// 🟥 MODAL (hezké popup okno)
+// 🟥 MODAL – popup okno
 // ======================================================
 function showModal(html) {
-    let old = document.getElementById("sv-modal");
+    const old = document.getElementById("sv-modal");
     if (old) old.remove();
 
-    const modal = document.createElement("div");
-    modal.id = "sv-modal";
-    modal.style = `
-        position: fixed;
-        top:0; left:0; width:100%; height:100%;
-        background: rgba(0,0,0,0.65);
+    const overlay = document.createElement("div");
+    overlay.id = "sv-modal";
+    overlay.style = `
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background:rgba(0,0,0,0.65); backdrop-filter:blur(3px);
         display:flex; align-items:center; justify-content:center;
-        z-index: 999999;
+        z-index:99999;
+        padding:20px;
     `;
-    modal.innerHTML = `
+
+    overlay.innerHTML = `
         <div style="
-            background:#111; padding:25px 30px;
-            border-radius:14px; max-width:420px; width:90%;
-            color:#eee; font-family:Arial; line-height:1.55;
+            background:#111; color:#eee;
+            padding:28px; border-radius:18px;
+            width:95%; max-width:420px;
+            line-height:1.6;
+            font-family:Arial;
             box-shadow:0 0 25px rgba(0,0,0,0.45);
         ">
             ${html}
+
+            <button onclick="document.getElementById('sv-modal').remove()"
+                style="
+                    margin-top:25px;
+                    background:#d8d8d8;
+                    color:#000;
+                    padding:14px 20px;
+                    border:none;
+                    border-radius:12px;
+                    width:70%;
+                    display:block;
+                    margin-left:auto; margin-right:auto;
+                    font-size:18px;
+                    font-weight:bold;
+                    cursor:pointer;
+                ">
+                Zavřít
+            </button>
         </div>
     `;
-    document.body.appendChild(modal);
+
+    document.body.appendChild(overlay);
 }
 
 
 // ======================================================
-// 🚀 HLAVNÍ FUNKCE – spustí test
+// 🚀 HLAVNÍ FUNKCE TESTU
 // ======================================================
 async function runSecurityTest() {
 
     const tx = getTexts();
-    alert(tx.loading);
+
+    // Loader popup (už žádný alert!)
+    showModal(`<h2>${tx.loading}</h2>`);
 
     let data;
-
     try {
         const res = await fetch(
             "https://function-bun-production-6014.up.railway.app/api/security-check",
             { cache: "no-store" }
         );
-
-        try {
-            data = await res.json();
-        } catch (e) {
-            alert("Server error – invalid response.");
-            return;
-        }
-
+        data = await res.json();
     } catch (e) {
-        alert("Server momentálně neodpovídá.");
+        showModal("<h2>❌ Server neodpovídá.</h2>");
         return;
     }
 
-    if (!data || !data.success) {
-        alert("Chybná odpověď serveru.");
+    if (!data.success) {
+        showModal("<h2>❌ Chybná odpověď serveru.</h2>");
         return;
     }
+
+    // mapování rizik
+    let riskLabel =
+        data.risk <= 2 ? tx.risk_low :
+        data.risk === 3 ? tx.risk_mid :
+        tx.risk_high;
 
     const browserPretty = detectBrowser();
 
-    let riskLabel =
-        data.risk <= 2 ? tx.risk_low :
-        data.risk == 3 ? tx.risk_mid :
-        tx.risk_high;
-
+    // finální popup
     showModal(`
         <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
 
@@ -249,15 +269,6 @@ async function runSecurityTest() {
         <b>${tx.risk}:</b> ${riskLabel}<br><br>
 
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
-        <b>${tx.browser}:</b> ${browserPretty}<br><br>
-
-        <button onclick="document.getElementById('sv-modal').remove();" 
-          style="
-            background:#d8d8d8; color:#000; font-weight:bold;
-            border:none; padding:12px 22px; border-radius:10px;
-            cursor:pointer;
-        ">
-          ${tx.close}
-        </button>
+        <b>${tx.browser}:</b> ${browserPretty}<br>
     `);
 }
