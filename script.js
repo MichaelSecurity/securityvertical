@@ -3,7 +3,7 @@ console.log("SecurityVertical – multi language version loaded");
 
 
 // ======================================================
-// 🌍 Texty podle jazyka
+// 🌍 Texty podle jazyka stránky
 // ======================================================
 function getTexts() {
     const lang = document.documentElement.lang || "en";
@@ -16,13 +16,13 @@ function getTexts() {
             country: "Stát",
             city: "Město",
             isp: "Poskytovatel",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hosting",
             risk: "Bezpečnostní riziko",
             device: "Zařízení",
             browser: "Prohlížeč",
             vpn_yes: "ANO",
             vpn_no: "NE",
-            risk_low: "NÍZKÉ – připojení je v pořádku 👍",
+            risk_low: "NÍZKÉ – vše v pořádku 👍",
             risk_mid: "STŘEDNÍ – doporučujeme zkontrolovat nastavení ⚠️",
             risk_high: "VYSOKÉ – riziko ohrožení soukromí 🚨",
             close: "Zavřít"
@@ -35,7 +35,7 @@ function getTexts() {
             country: "Country",
             city: "City",
             isp: "Provider",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hosting",
             risk: "Security Risk",
             device: "Device",
             browser: "Browser",
@@ -54,7 +54,7 @@ function getTexts() {
             country: "Land",
             city: "Stadt",
             isp: "Anbieter",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hosting",
             risk: "Sicherheitsrisiko",
             device: "Gerät",
             browser: "Browser",
@@ -73,7 +73,7 @@ function getTexts() {
             country: "País",
             city: "Ciudad",
             isp: "Proveedor",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hosting",
             risk: "Riesgo de seguridad",
             device: "Dispositivo",
             browser: "Navegador",
@@ -92,7 +92,7 @@ function getTexts() {
             country: "Pays",
             city: "Ville",
             isp: "Fournisseur",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hébergement",
             risk: "Risque de sécurité",
             device: "Appareil",
             browser: "Navigateur",
@@ -111,7 +111,7 @@ function getTexts() {
             country: "Kraj",
             city: "Miasto",
             isp: "Dostawca",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hosting",
             risk: "Ryzyko bezpieczeństwa",
             device: "Urządzenie",
             browser: "Przeglądarka",
@@ -130,7 +130,7 @@ function getTexts() {
             country: "País",
             city: "Cidade",
             isp: "Provedor",
-            vpn: "VPN",
+            vpn: "VPN / Proxy / Hosting",
             risk: "Risco de segurança",
             device: "Dispositivo",
             browser: "Navegador",
@@ -154,109 +154,102 @@ const safe = v => v ? v : "—";
 
 
 // ======================================================
-// 🔍 Detekce prohlížeče
+// 🔍 Detekce prohlížeče (iOS Chrome / Firefox / Edge FIXED)
 // ======================================================
 function detectBrowser() {
     const ua = navigator.userAgent;
 
-    if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) return "Safari";
-    if (/Chrome/i.test(ua)) return "Chrome";
-    if (/Firefox/i.test(ua)) return "Firefox";
-    if (/Edg/i.test(ua)) return "Microsoft Edge";
-    if (/OPR/i.test(ua)) return "Opera";
+    // iOS wrappers
+    if (ua.includes("CriOS")) return "Chrome (iOS)";
+    if (ua.includes("FxiOS")) return "Firefox (iOS)";
+    if (ua.includes("EdgiOS")) return "Edge (iOS)";
+
+    // Desktop / Android
+    if (ua.includes("Edg")) return "Microsoft Edge";
+    if (ua.includes("OPR")) return "Opera";
+    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("Firefox")) return "Firefox";
+    if (ua.includes("Safari")) return "Safari";
 
     return "Unknown";
 }
 
 
 // ======================================================
-// 🟥 MODAL – popup okno
+// 🟥 MODAL – perfektně vycentrovaný
 // ======================================================
 function showModal(html) {
-    const old = document.getElementById("sv-modal");
+    let old = document.getElementById("sv-modal");
     if (old) old.remove();
 
-    const overlay = document.createElement("div");
-    overlay.id = "sv-modal";
-    overlay.style = `
-        position:fixed; top:0; left:0; width:100%; height:100%;
-        background:rgba(0,0,0,0.65); backdrop-filter:blur(3px);
+    const modal = document.createElement("div");
+    modal.id = "sv-modal";
+
+    modal.style = `
+        position: fixed;
+        top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.65);
         display:flex; align-items:center; justify-content:center;
-        z-index:99999;
-        padding:20px;
+        z-index: 999999;
+        padding: 20px;
+        box-sizing: border-box;
     `;
 
-    overlay.innerHTML = `
+    modal.innerHTML = `
         <div style="
-            background:#111; color:#eee;
-            padding:28px; border-radius:18px;
-            width:95%; max-width:420px;
-            line-height:1.6;
-            font-family:Arial;
+            background:#111; padding:25px 30px;
+            border-radius:16px; max-width:420px; width:100%;
+            color:#eee; font-family:Arial; line-height:1.55;
             box-shadow:0 0 25px rgba(0,0,0,0.45);
+            text-align:left;
         ">
             ${html}
-
-            <button onclick="document.getElementById('sv-modal').remove()"
-                style="
-                    margin-top:25px;
-                    background:#d8d8d8;
-                    color:#000;
-                    padding:14px 20px;
-                    border:none;
-                    border-radius:12px;
-                    width:70%;
-                    display:block;
-                    margin-left:auto; margin-right:auto;
-                    font-size:18px;
-                    font-weight:bold;
-                    cursor:pointer;
-                ">
-                Zavřít
-            </button>
         </div>
     `;
 
-    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
 }
 
 
 // ======================================================
-// 🚀 HLAVNÍ FUNKCE TESTU
+// 🚀 HLAVNÍ TEST
 // ======================================================
 async function runSecurityTest() {
-
     const tx = getTexts();
-
-    // Loader popup (už žádný alert!)
-    showModal(`<h2>${tx.loading}</h2>`);
+    alert(tx.loading);
 
     let data;
+
     try {
         const res = await fetch(
             "https://function-bun-production-6014.up.railway.app/api/security-check",
             { cache: "no-store" }
         );
-        data = await res.json();
+
+        try {
+            data = await res.json();
+        } catch (e) {
+            alert("Server error – invalid response.");
+            return;
+        }
+
     } catch (e) {
-        showModal("<h2>❌ Server neodpovídá.</h2>");
+        alert("Server momentálně neodpovídá.");
         return;
     }
 
-    if (!data.success) {
-        showModal("<h2>❌ Chybná odpověď serveru.</h2>");
+    if (!data || !data.success) {
+        alert("Chybná odpověď serveru.");
         return;
     }
-
-    // mapování rizik
-    let riskLabel =
-        data.risk <= 2 ? tx.risk_low :
-        data.risk === 3 ? tx.risk_mid :
-        tx.risk_high;
 
     const browserPretty = detectBrowser();
 
-    // finální popup
+    let riskLabel =
+        data.risk <= 2 ? tx.risk_low :
+        data.risk == 3 ? tx.risk_mid :
+        tx.risk_high;
+
     showModal(`
         <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
 
@@ -269,6 +262,15 @@ async function runSecurityTest() {
         <b>${tx.risk}:</b> ${riskLabel}<br><br>
 
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
-        <b>${tx.browser}:</b> ${browserPretty}<br>
+        <b>${tx.browser}:</b> ${browserPretty}<br><br>
+
+        <button onclick="document.getElementById('sv-modal').remove();" 
+          style="
+            background:#d8d8d8; color:#000; font-weight:bold;
+            border:none; padding:12px 22px; border-radius:10px;
+            cursor:pointer; width:100%; margin-top:10px; text-align:center;
+        ">
+          ${tx.close}
+        </button>
     `);
 }
