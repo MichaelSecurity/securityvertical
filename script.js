@@ -1,9 +1,9 @@
-// SecurityVertical – multi-language frontend
-console.log("SecurityVertical – multi language version loaded");
+// SecurityVertical – multi-language version
+console.log("SecurityVertical loaded");
 
 
 // ======================================================
-// 🌍 Texty podle jazyka stránky
+// 🌍 TEXTY PODLE JAZYKA
 // ======================================================
 function getTexts() {
     const lang = document.documentElement.lang || "en";
@@ -16,7 +16,7 @@ function getTexts() {
             country: "Stát",
             city: "Město",
             isp: "Poskytovatel",
-            vpn: "VPN / Proxy / Hosting",
+            vpn: "VPN",
             risk: "Bezpečnostní riziko",
             device: "Zařízení",
             browser: "Prohlížeč",
@@ -35,7 +35,7 @@ function getTexts() {
             country: "Country",
             city: "City",
             isp: "Provider",
-            vpn: "VPN / Proxy / Hosting",
+            vpn: "VPN",
             risk: "Security Risk",
             device: "Device",
             browser: "Browser",
@@ -54,7 +54,7 @@ function getTexts() {
             country: "Land",
             city: "Stadt",
             isp: "Anbieter",
-            vpn: "VPN / Proxy / Hosting",
+            vpn: "VPN",
             risk: "Sicherheitsrisiko",
             device: "Gerät",
             browser: "Browser",
@@ -73,7 +73,7 @@ function getTexts() {
             country: "País",
             city: "Ciudad",
             isp: "Proveedor",
-            vpn: "VPN / Proxy / Hosting",
+            vpn: "VPN",
             risk: "Riesgo de seguridad",
             device: "Dispositivo",
             browser: "Navegador",
@@ -92,7 +92,7 @@ function getTexts() {
             country: "Pays",
             city: "Ville",
             isp: "Fournisseur",
-            vpn: "VPN / Proxy / Hébergement",
+            vpn: "VPN",
             risk: "Risque de sécurité",
             device: "Appareil",
             browser: "Navigateur",
@@ -111,7 +111,7 @@ function getTexts() {
             country: "Kraj",
             city: "Miasto",
             isp: "Dostawca",
-            vpn: "VPN / Proxy / Hosting",
+            vpn: "VPN",
             risk: "Ryzyko bezpieczeństwa",
             device: "Urządzenie",
             browser: "Przeglądarka",
@@ -130,7 +130,7 @@ function getTexts() {
             country: "País",
             city: "Cidade",
             isp: "Provedor",
-            vpn: "VPN / Proxy / Hosting",
+            vpn: "VPN",
             risk: "Risco de segurança",
             device: "Dispositivo",
             browser: "Navegador",
@@ -148,35 +148,29 @@ function getTexts() {
 
 
 // ======================================================
-// 🧠 Helper
+// 🔍 Helper pro bezpečné hodnoty
 // ======================================================
 const safe = v => v ? v : "—";
 
 
 // ======================================================
-// 🔍 Detekce prohlížeče (iOS Chrome / Firefox / Edge FIXED)
+// 🔍 Detekce prohlížeče
 // ======================================================
 function detectBrowser() {
     const ua = navigator.userAgent;
 
-    // iOS wrappers
-    if (ua.includes("CriOS")) return "Chrome (iOS)";
-    if (ua.includes("FxiOS")) return "Firefox (iOS)";
-    if (ua.includes("EdgiOS")) return "Edge (iOS)";
-
-    // Desktop / Android
     if (ua.includes("Edg")) return "Microsoft Edge";
-    if (ua.includes("OPR")) return "Opera";
-    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("OPR") || ua.includes("Opera")) return "Opera";
+    if (ua.includes("Chrome") && !ua.includes("Edg")) return "Chrome";
     if (ua.includes("Firefox")) return "Firefox";
-    if (ua.includes("Safari")) return "Safari";
+    if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
 
     return "Unknown";
 }
 
 
 // ======================================================
-// 🟥 MODAL – perfektně vycentrovaný
+// 🟥 MODAL – středově vycentrované okno
 // ======================================================
 function showModal(html) {
     let old = document.getElementById("sv-modal");
@@ -188,8 +182,8 @@ function showModal(html) {
     modal.style = `
         position: fixed;
         top:0; left:0; width:100%; height:100%;
-        background: rgba(0,0,0,0.65);
         display:flex; align-items:center; justify-content:center;
+        background: rgba(0,0,0,0.65);
         z-index: 999999;
         padding: 20px;
         box-sizing: border-box;
@@ -197,9 +191,14 @@ function showModal(html) {
 
     modal.innerHTML = `
         <div style="
-            background:#111; padding:25px 30px;
-            border-radius:16px; max-width:420px; width:100%;
-            color:#eee; font-family:Arial; line-height:1.55;
+            background:#111;
+            padding:25px 30px;
+            border-radius:14px;
+            max-width:420px;
+            width:100%;
+            color:#eee;
+            font-family:Arial;
+            line-height:1.55;
             box-shadow:0 0 25px rgba(0,0,0,0.45);
             text-align:left;
         ">
@@ -212,11 +211,17 @@ function showModal(html) {
 
 
 // ======================================================
-// 🚀 HLAVNÍ TEST
+// 🚀 HLAVNÍ FUNKCE – spustí test (jen 1 popup)
 // ======================================================
 async function runSecurityTest() {
+
     const tx = getTexts();
-    alert(tx.loading);
+
+    // Loader – hned zobrazíme modální okno, žádný alert
+    showModal(`
+        <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
+        <p>${tx.loading}</p>
+    `);
 
     let data;
 
@@ -229,17 +234,17 @@ async function runSecurityTest() {
         try {
             data = await res.json();
         } catch (e) {
-            alert("Server error – invalid response.");
+            showModal("<h3>Server error – invalid response.</h3>");
             return;
         }
 
     } catch (e) {
-        alert("Server momentálně neodpovídá.");
+        showModal("<h3>Server momentálně neodpovídá.</h3>");
         return;
     }
 
     if (!data || !data.success) {
-        alert("Chybná odpověď serveru.");
+        showModal("<h3>Chybná odpověď serveru.</h3>");
         return;
     }
 
@@ -250,6 +255,7 @@ async function runSecurityTest() {
         data.risk == 3 ? tx.risk_mid :
         tx.risk_high;
 
+    // Přepsání loaderu výsledkem
     showModal(`
         <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
 
