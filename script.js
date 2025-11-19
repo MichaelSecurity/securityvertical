@@ -4,15 +4,14 @@
 // Single modal + centered + loader overlay
 // =======================================================
 
-console.log("SecurityVertical – FINAL version loaded");
-
+console.log("SecurityVertical – FINAL MULTI-LANGUAGE version loaded");
 
 // =======================================================
 // 🌍 Language dictionary
 // =======================================================
 function getTexts() {
 
-    // ⭐ FIX: normalizace jazyků (de-DE → de, pt-BR → pt)
+    // normalizace jazyků (de-DE → de, pt-BR → pt)
     let rawLang = (document.documentElement.lang || "en").toLowerCase();
     let lang = rawLang.split("-")[0];
 
@@ -51,21 +50,109 @@ function getTexts() {
             device: "Device",
             browser: "Browser",
             close: "Close"
+        },
+
+        de: {
+            loading: "Sicherheitsprüfung läuft…",
+            title: "🔍 Ergebnis der Sicherheitsprüfung",
+            ip: "IP Adresse",
+            country: "Land",
+            city: "Stadt",
+            isp: "Anbieter",
+            vpn: "VPN / Anonymität",
+            risk: "Sicherheitsrisiko",
+            anon: "Anonymmodus – echtes Sicherheitsniveau kann nicht bestimmt werden 🟪",
+            risk_low: "NIEDRIG – alles in Ordnung 👍",
+            risk_mid: "MITTEL – Überprüfung empfohlen ⚠️",
+            risk_high: "HOCH – riskante IP / Rechenzentrum / Ruf 🚨",
+            device: "Gerät",
+            browser: "Browser",
+            close: "Schließen"
+        },
+
+        pl: {
+            loading: "Trwa kontrola bezpieczeństwa…",
+            title: "🔍 Wynik kontroli bezpieczeństwa",
+            ip: "Adres IP",
+            country: "Kraj",
+            city: "Miasto",
+            isp: "Dostawca",
+            vpn: "VPN / Anonimowość",
+            risk: "Ryzyko bezpieczeństwa",
+            anon: "Tryb anonimowy – prawdziwego poziomu bezpieczeństwa nie można określić 🟪",
+            risk_low: "NISKIE – wszystko w porządku 👍",
+            risk_mid: "ŚREDNIE – zalecana weryfikacja ⚠️",
+            risk_high: "WYSOKIE – ryzykowne IP / centrum danych / reputacja 🚨",
+            device: "Urządzenie",
+            browser: "Przeglądarka",
+            close: "Zamknij"
+        },
+
+        es: {
+            loading: "Ejecutando verificación de seguridad…",
+            title: "🔍 Resultado de la verificación de seguridad",
+            ip: "Dirección IP",
+            country: "País",
+            city: "Ciudad",
+            isp: "Proveedor",
+            vpn: "VPN / Anonimato",
+            risk: "Riesgo de seguridad",
+            anon: "Modo anónimo – no es posible determinar el nivel real de seguridad 🟪",
+            risk_low: "BAJO – todo parece correcto 👍",
+            risk_mid: "MEDIO – revisión recomendada ⚠️",
+            risk_high: "ALTO – IP riesgosa / centro de datos / reputación 🚨",
+            device: "Dispositivo",
+            browser: "Navegador",
+            close: "Cerrar"
+        },
+
+        fr: {
+            loading: "Analyse de sécurité en cours…",
+            title: "🔍 Résultat de l’analyse de sécurité",
+            ip: "Adresse IP",
+            country: "Pays",
+            city: "Ville",
+            isp: "Fournisseur",
+            vpn: "VPN / Anonymat",
+            risk: "Risque de sécurité",
+            anon: "Mode anonyme – niveau de sécurité réel impossible à déterminer 🟪",
+            risk_low: "FAIBLE – tout est correct 👍",
+            risk_mid: "MOYEN – vérification recommandée ⚠️",
+            risk_high: "ÉLEVÉ – IP risquée / datacenter / réputation 🚨",
+            device: "Appareil",
+            browser: "Navigateur",
+            close: "Fermer"
+        },
+
+        pt: {
+            loading: "Executando verificação de segurança…",
+            title: "🔍 Resultado da verificação de segurança",
+            ip: "Endereço IP",
+            country: "País",
+            city: "Cidade",
+            isp: "Provedor",
+            vpn: "VPN / Anonimato",
+            risk: "Risco de segurança",
+            anon: "Modo anônimo – nível real de segurança não pode ser determinado 🟪",
+            risk_low: "BAIXO – tudo certo 👍",
+            risk_mid: "MÉDIO – revisão recomendada ⚠️",
+            risk_high: "ALTO – IP arriscado / datacenter / reputação 🚨",
+            device: "Dispositivo",
+            browser: "Navegador",
+            close: "Fechar"
         }
     };
 
     return t[lang] || t.en;
 }
 
-
 // =======================================================
-// 🔒 Safe helper
+// Safe helper
 // =======================================================
 const safe = v => v ? v : "—";
 
-
 // =======================================================
-// 🧠 Browser detection – FIXED for iOS Chrome/Safari
+// Browser detection
 // =======================================================
 function detectBrowser() {
     const ua = navigator.userAgent;
@@ -80,13 +167,11 @@ function detectBrowser() {
     if (ua.includes("Firefox")) return "Firefox";
     if (ua.includes("Edg")) return "Edge";
     if (ua.includes("OPR")) return "Opera";
-
     return "Unknown";
 }
 
-
 // =======================================================
-// 🟦 Loader overlay
+// Loader
 // =======================================================
 function showLoader(text) {
     const old = document.getElementById("sv-loader");
@@ -95,14 +180,14 @@ function showLoader(text) {
     const div = document.createElement("div");
     div.id = "sv-loader";
     div.style = `
-        position: fixed;
-        top:0; left:0; width:100vw; height:100vh;
+        position: fixed; top:0; left:0;
+        width:100vw; height:100vh;
         background: rgba(0,0,0,0.6);
-        z-index: 999998;
+        z-index:999998;
         display:flex; align-items:center; justify-content:center;
-        font-size: 22px; color:white; font-family:Arial;
+        font-size:22px; color:white; font-family:Arial;
     `;
-    div.innerHTML = `<div>${text}</div>`;
+    div.innerHTML = text;
     document.body.appendChild(div);
 }
 
@@ -111,9 +196,8 @@ function hideLoader() {
     if (el) el.remove();
 }
 
-
 // =======================================================
-// 🟥 Modal – always centered
+// Modal
 // =======================================================
 function showModal(html) {
     const old = document.getElementById("sv-modal");
@@ -122,16 +206,12 @@ function showModal(html) {
     const wrap = document.createElement("div");
     wrap.id = "sv-modal";
     wrap.style = `
-        position: fixed;
-        top:0; left:0;
+        position: fixed; top:0; left:0;
         width:100vw; height:100vh;
         background: rgba(0,0,0,0.65);
-        z-index: 999999;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding: 20px;
-        box-sizing: border-box;
+        z-index:999999;
+        display:flex; align-items:center; justify-content:center;
+        padding:20px; box-sizing:border-box;
     `;
 
     wrap.innerHTML = `
@@ -149,32 +229,30 @@ function showModal(html) {
     document.body.appendChild(wrap);
 }
 
-
 // =======================================================
-// 🧩 Risk engine (REAL, NON-FAKE)
+// Risk engine
 // =======================================================
 function computeRisk(data, tx) {
-
-    if (data.vpn || data.tor || data.proxy) {
+    if (data.vpn || data.tor || data.proxy)
         return { label: tx.anon, level: "anon" };
-    }
 
-    if (data.is_hosting) {
+    if (data.is_hosting)
         return { label: tx.risk_mid, level: "mid" };
-    }
 
-    if (data.reputation && data.reputation === "bad") {
+    if (data.reputation === "bad")
         return { label: tx.risk_high, level: "high" };
-    }
 
-    if (data.risk <= 2) return { label: tx.risk_low, level: "low" };
-    if (data.risk === 3) return { label: tx.risk_mid, level: "mid" };
+    if (data.risk <= 2)
+        return { label: tx.risk_low, level: "low" };
+
+    if (data.risk === 3)
+        return { label: tx.risk_mid, level: "mid" };
+
     return { label: tx.risk_high, level: "high" };
 }
 
-
 // =======================================================
-// 🚀 MAIN TEST FUNCTION
+// MAIN TEST FUNCTION
 // =======================================================
 async function runSecurityTest() {
 
@@ -188,7 +266,7 @@ async function runSecurityTest() {
             { cache: "no-store" }
         );
         data = await res.json();
-    } catch (e) {
+    } catch {
         hideLoader();
         alert("Server momentálně neodpovídá.");
         return;
