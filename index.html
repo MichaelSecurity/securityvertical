@@ -1,94 +1,43 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SecurityVertical – Redirecting…</title>
+<script>
+  fetch("https://ipapi.co/json/")
+    .then(res => res.json())
+    .then(data => {
+      const country = data.country_code;
 
-  <meta name="description" content="Automatic language detection. Redirecting to your local version of SecurityVertical.">
-
-  <script>
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
-      .then(data => {
-        const country = data.country_code;
-
-        // Czech + Slovakia
-        if (country === "CZ" || country === "SK") {
-          window.location.href = "index-cs.html";
-        }
-        // Germany, Austria, Switzerland
-        else if (country === "DE" || country === "AT" || country === "CH") {
-          window.location.href = "index-de.html";
-        }
-        // Poland
-        else if (country === "PL") {
-          window.location.href = "index-pl.html";
-        }
-        // Brazil
-        else if (country === "BR") {
-          window.location.href = "index-ptbr.html";
-        }
-        // Spanish-speaking countries
-        else if (
-          country === "ES" || country === "MX" || country === "AR" || 
-          country === "CO" || country === "CL" || country === "PE" ||
-          country === "VE" || country === "UY" || country === "EC"
-        ) {
-          window.location.href = "index-es.html";
-        }
-        // French-speaking countries
-        else if (
-          country === "FR" || country === "BE" || country === "CA" || 
-          country === "CH" || country === "LU" || country === "MC"
-        ) {
-          window.location.href = "index-fr.html";
-        }
-        // Default: English
-        else {
-          window.location.href = "index-en.html";
-        }
-      })
-      .catch(() => {
-        // Fallback → English
+      // Czech + Slovakia
+      if (country === "CZ" || country === "SK") {
+        window.location.href = "index-cs.html";
+      }
+      // Germany + Austria + Switzerland
+      else if (country === "DE" || country === "AT" || country === "CH") {
+        window.location.href = "index-de.html";
+      }
+      // Poland
+      else if (country === "PL") {
+        window.location.href = "index-pl.html";
+      }
+      // Brazil
+      else if (country === "BR") {
+        window.location.href = "index-ptbr.html";
+      }
+      // Spanish-speaking
+      else if (
+        ["ES","MX","AR","CO","CL","PE","VE","UY","EC"].includes(country)
+      ) {
+        window.location.href = "index-es.html";
+      }
+      // French-speaking
+      else if (
+        ["FR","BE","CA","LU","MC"].includes(country)
+      ) {
+        window.location.href = "index-fr.html";
+      }
+      // Default English
+      else {
         window.location.href = "index-en.html";
-      });
-  </script>
-
-  <style>
-    body {
-      background: #000;
-      color: #ccc;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 120px;
-    }
-
-    a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 0 6px;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-
-<body>
-  <h2>Redirecting…</h2>
-  <p>If you are not redirected automatically, choose your language:</p>
-
-  <p>
-    <a href="index-cs.html">Čeština</a> •
-    <a href="index-en.html">English</a> •
-    <a href="index-de.html">Deutsch</a> •
-    <a href="index-pl.html">Polski</a> •
-    <a href="index-ptbr.html">Português (BR)</a> •
-    <a href="index-es.html">Español</a> •
-    <a href="index-fr.html">Français</a>
-  </p>
-</body>
-</html>
+      }
+    })
+    .catch(() => {
+      window.location.href = "index-en.html";
+    });
+</script>
