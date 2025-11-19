@@ -1,59 +1,41 @@
 // SecurityVertical – frontend test připojení
 console.log("SecurityVertical frontend loaded");
 
-// ========================================
-// Hezký výstup do stránky – profesionální UI
-// ========================================
-
+// ===============================
+// Spuštění testu po kliknutí
+// ===============================
 async function runSecurityTest() {
 
-    // najdeme box V RÁMCI HERO SEKCE (pod tlačítkem)
-    let box = document.getElementById("resultBox");
-
-    if (!box) {
-        const hero = document.querySelector(".hero");
-
-        box = document.createElement("div");
-        box.id = "resultBox";
-        box.className = "result-box";
-
-        hero.appendChild(box);
-    }
-
-    // Zobrazíme "probíhá test"
-    box.innerHTML = `
-        <div class="loading">
-            🔍 Probíhá bezpečnostní kontrola…
-        </div>
-    `;
+    // Loader (volitelně možná přidáme animaci)
+    alert("Probíhá bezpečnostní kontrola…");
 
     try {
         const response = await fetch(
             "https://function-bun-production-6014.up.railway.app/api/security-check"
         );
+
         const data = await response.json();
 
         if (!data.success) {
-            box.innerHTML = "<strong>Chyba:</strong> Server neodpovídá.";
+            alert("Chyba komunikace se serverem.");
             return;
         }
 
-        // === HEZKÉ VYKRESLENÍ ===
-        box.innerHTML = `
-            <h3 class="result-title">Výsledek kontroly:</h3>
+        // Výsledek testu – zatím alert, později uděláme pěknou stránku
+        alert(
+            "Výsledek kontroly:\n\n" +
+            "IP adresa: " + data.ip + "\n" +
+            "Stát: " + data.country + "\n" +
+            "Město: " + data.city + "\n" +
+            "ISP: " + data.isp + "\n\n" +
+            "VPN: " + (data.vpn ? "ANO" : "NE") + "\n" +
+            "Riziko: " + data.risk + "\n\n" +
+            "Zařízení: " + data.platform + "\n" +
+            "Prohlížeč: " + data.browser
+        );
 
-            <p><strong>IP adresa:</strong> ${data.ip}</p>
-            <p><strong>Stát:</strong> ${data.country}</p>
-            <p><strong>Město:</strong> ${data.city}</p>
-            <p><strong>ISP:</strong> ${data.isp}</p>
-
-            <p><strong>VPN:</strong> ${data.vpn ? "ANO" : "NE"}</p>
-            <p><strong>Riziko:</strong> ${data.risk}</p>
-
-            <p><strong>Zařízení:</strong> ${data.platform}</p>
-            <p><strong>Prohlížeč:</strong> ${data.browser}</p>
-        `;
     } catch (err) {
-        box.innerHTML = "<strong>Chyba:</strong> Dočasná chyba spojení.";
+        alert("Server momentálně neodpovídá.");
+        console.error(err);
     }
 }
