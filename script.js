@@ -1,10 +1,10 @@
-// SecurityVertical – multi-language version
-console.log("SecurityVertical loaded");
+// SecurityVertical – Multi-language + correct browser detection + clean popup
+console.log("SecurityVertical script loaded");
 
 
-// ======================================================
-// 🌍 TEXTY PODLE JAZYKA
-// ======================================================
+// ===========================================
+// 🌍 Texty podle jazyka
+// ===========================================
 function getTexts() {
     const lang = document.documentElement.lang || "en";
 
@@ -45,101 +45,6 @@ function getTexts() {
             risk_mid: "MEDIUM – consider reviewing settings ⚠️",
             risk_high: "HIGH – privacy at risk 🚨",
             close: "Close"
-        },
-
-        de: {
-            loading: "Sicherheitsprüfung läuft…",
-            title: "🔍 Ergebnis der Sicherheitsprüfung",
-            ip: "IP Adresse",
-            country: "Land",
-            city: "Stadt",
-            isp: "Anbieter",
-            vpn: "VPN",
-            risk: "Sicherheitsrisiko",
-            device: "Gerät",
-            browser: "Browser",
-            vpn_yes: "JA",
-            vpn_no: "NEIN",
-            risk_low: "NIEDRIG – alles in Ordnung 👍",
-            risk_mid: "MITTEL – Einstellungen prüfen ⚠️",
-            risk_high: "HOCH – Datenschutz gefährdet 🚨",
-            close: "Schließen"
-        },
-
-        es: {
-            loading: "Realizando verificación de seguridad…",
-            title: "🔍 Resultado de la verificación",
-            ip: "Dirección IP",
-            country: "País",
-            city: "Ciudad",
-            isp: "Proveedor",
-            vpn: "VPN",
-            risk: "Riesgo de seguridad",
-            device: "Dispositivo",
-            browser: "Navegador",
-            vpn_yes: "SÍ",
-            vpn_no: "NO",
-            risk_low: "BAJO – todo está en orden 👍",
-            risk_mid: "MEDIO – revisa tu configuración ⚠️",
-            risk_high: "ALTO – riesgo para tu privacidad 🚨",
-            close: "Cerrar"
-        },
-
-        fr: {
-            loading: "Analyse de sécurité en cours…",
-            title: "🔍 Résultat de l'analyse",
-            ip: "Adresse IP",
-            country: "Pays",
-            city: "Ville",
-            isp: "Fournisseur",
-            vpn: "VPN",
-            risk: "Risque de sécurité",
-            device: "Appareil",
-            browser: "Navigateur",
-            vpn_yes: "OUI",
-            vpn_no: "NON",
-            risk_low: "FAIBLE – tout est correct 👍",
-            risk_mid: "MOYEN – vérifiez vos paramètres ⚠️",
-            risk_high: "ÉLEVÉ – risque pour la vie privée 🚨",
-            close: "Fermer"
-        },
-
-        pl: {
-            loading: "Trwa kontrola bezpieczeństwa…",
-            title: "🔍 Wynik kontroli",
-            ip: "Adres IP",
-            country: "Kraj",
-            city: "Miasto",
-            isp: "Dostawca",
-            vpn: "VPN",
-            risk: "Ryzyko bezpieczeństwa",
-            device: "Urządzenie",
-            browser: "Przeglądarka",
-            vpn_yes: "TAK",
-            vpn_no: "NIE",
-            risk_low: "NISKIE – wszystko w porządku 👍",
-            risk_mid: "ŚREDNIE – sprawdź ustawienia ⚠️",
-            risk_high: "WYSOKIE – zagrożenie prywatności 🚨",
-            close: "Zamknij"
-        },
-
-        "pt-BR": {
-            loading: "Executando verificação de segurança…",
-            title: "🔍 Resultado da verificação",
-            ip: "Endereço IP",
-            country: "País",
-            city: "Cidade",
-            isp: "Provedor",
-            vpn: "VPN",
-            risk: "Risco de segurança",
-            device: "Dispositivo",
-            browser: "Navegador",
-            vpn_yes: "SIM",
-            vpn_no: "NÃO",
-            risk_low: "BAIXO – tudo certo 👍",
-            risk_mid: "MÉDIO – revise suas configurações ⚠️",
-            risk_high: "ALTO – risco para sua privacidade 🚨",
-            close: "Fechar"
         }
     };
 
@@ -147,60 +52,87 @@ function getTexts() {
 }
 
 
-// ======================================================
-// 🔍 Helper pro bezpečné hodnoty
-// ======================================================
+// ===========================================
+// 🧠 Helper
+// ===========================================
 const safe = v => v ? v : "—";
 
 
-// ======================================================
-// 🔍 Detekce prohlížeče
-// ======================================================
+// ===========================================
+// 🔍 Korektní detekce prohlížeče včetně iOS Chrome
+// ===========================================
 function detectBrowser() {
     const ua = navigator.userAgent;
 
-    if (ua.includes("Edg")) return "Microsoft Edge";
-    if (ua.includes("OPR") || ua.includes("Opera")) return "Opera";
-    if (ua.includes("Chrome") && !ua.includes("Edg")) return "Chrome";
+    if (ua.includes("CriOS")) return "Chrome (iOS)";
+    if (ua.includes("FxiOS")) return "Firefox (iOS)";
+    if (ua.includes("EdgiOS")) return "Edge (iOS)";
+    if (ua.includes("OPiOS")) return "Opera (iOS)";
+
+    if (ua.includes("Chrome") && ua.includes("Android")) return "Chrome";
+    if (ua.includes("Chrome") && !ua.includes("Safari")) return "Chrome";
+
+    if (ua.includes("Safari") && !ua.includes("Chrome") && !ua.includes("CriOS")) return "Safari";
+
     if (ua.includes("Firefox")) return "Firefox";
-    if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+    if (ua.includes("Edg")) return "Edge";
+    if (ua.includes("OPR")) return "Opera";
 
     return "Unknown";
 }
 
 
-// ======================================================
-// 🟥 MODAL – středově vycentrované okno
-// ======================================================
+// ===========================================
+// 🟦 Loader místo otravného alert()
+// ===========================================
+function showLoader(text) {
+    let old = document.getElementById("sv-loader");
+    if (old) old.remove();
+
+    const div = document.createElement("div");
+    div.id = "sv-loader";
+    div.style = `
+        position: fixed;
+        top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999998;
+        display:flex; align-items:center; justify-content:center;
+        color:#fff; font-size:22px; font-family:Arial;
+    `;
+    div.innerHTML = `<div>${text}</div>`;
+    document.body.appendChild(div);
+}
+
+function hideLoader() {
+    let el = document.getElementById("sv-loader");
+    if (el) el.remove();
+}
+
+
+// ===========================================
+// 🟥 MODAL – hlavní popup
+// ===========================================
 function showModal(html) {
     let old = document.getElementById("sv-modal");
     if (old) old.remove();
 
     const modal = document.createElement("div");
     modal.id = "sv-modal";
-
     modal.style = `
         position: fixed;
         top:0; left:0; width:100%; height:100%;
-        display:flex; align-items:center; justify-content:center;
         background: rgba(0,0,0,0.65);
+        display:flex; align-items:center; justify-content:center;
         z-index: 999999;
-        padding: 20px;
-        box-sizing: border-box;
+        padding:20px;
     `;
 
     modal.innerHTML = `
         <div style="
-            background:#111;
-            padding:25px 30px;
-            border-radius:14px;
-            max-width:420px;
-            width:100%;
-            color:#eee;
-            font-family:Arial;
-            line-height:1.55;
-            box-shadow:0 0 25px rgba(0,0,0,0.45);
-            text-align:left;
+            background:#111; padding:28px;
+            border-radius:14px; width:100%; max-width:420px;
+            color:#eee; font-family:Arial; line-height:1.55;
+            text-align:left; box-shadow:0 0 25px rgba(0,0,0,0.45);
         ">
             ${html}
         </div>
@@ -210,18 +142,15 @@ function showModal(html) {
 }
 
 
-// ======================================================
-// 🚀 HLAVNÍ FUNKCE – spustí test (jen 1 popup)
-// ======================================================
+// ===========================================
+// 🚀 HLAVNÍ FUNKCE – spuštění testu
+// ===========================================
 async function runSecurityTest() {
 
     const tx = getTexts();
 
-    // Loader – hned zobrazíme modální okno, žádný alert
-    showModal(`
-        <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
-        <p>${tx.loading}</p>
-    `);
+    // ❌ už žádný alert — dáme loader
+    showLoader(tx.loading);
 
     let data;
 
@@ -230,34 +159,31 @@ async function runSecurityTest() {
             "https://function-bun-production-6014.up.railway.app/api/security-check",
             { cache: "no-store" }
         );
-
-        try {
-            data = await res.json();
-        } catch (e) {
-            showModal("<h3>Server error – invalid response.</h3>");
-            return;
-        }
-
+        data = await res.json();
     } catch (e) {
-        showModal("<h3>Server momentálně neodpovídá.</h3>");
+        hideLoader();
+        alert("Server momentálně neodpovídá.");
         return;
     }
+
+    hideLoader();
 
     if (!data || !data.success) {
-        showModal("<h3>Chybná odpověď serveru.</h3>");
+        alert("Chybná odpověď serveru.");
         return;
     }
-
-    const browserPretty = detectBrowser();
 
     let riskLabel =
         data.risk <= 2 ? tx.risk_low :
         data.risk == 3 ? tx.risk_mid :
         tx.risk_high;
 
-    // Přepsání loaderu výsledkem
+    const browserPretty = detectBrowser();
+
     showModal(`
-        <h2 style="margin-top:0; margin-bottom:15px;">${tx.title}</h2>
+        <h2 style="margin-top:0; margin-bottom:18px; text-align:center;">
+            ${tx.title}
+        </h2>
 
         <b>${tx.ip}:</b> ${safe(data.ip)}<br>
         <b>${tx.country}:</b> ${safe(data.country)}<br>
@@ -270,13 +196,15 @@ async function runSecurityTest() {
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
         <b>${tx.browser}:</b> ${browserPretty}<br><br>
 
-        <button onclick="document.getElementById('sv-modal').remove();" 
-          style="
-            background:#d8d8d8; color:#000; font-weight:bold;
-            border:none; padding:12px 22px; border-radius:10px;
-            cursor:pointer; width:100%; margin-top:10px; text-align:center;
-        ">
-          ${tx.close}
-        </button>
+        <div style="text-align:center;">
+            <button onclick="document.getElementById('sv-modal').remove()" 
+                style="
+                    background:#d8d8d8; color:#000; font-weight:bold;
+                    border:none; padding:12px 26px; border-radius:10px;
+                    cursor:pointer; font-size:18px;
+                ">
+                ${tx.close}
+            </button>
+        </div>
     `);
 }
