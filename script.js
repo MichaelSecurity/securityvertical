@@ -6,8 +6,9 @@ console.log("SecurityVertical frontend loaded");
 // ===============================
 async function runSecurityTest() {
 
-    // Loader (volitelně možná přidáme animaci)
-    alert("Probíhá bezpečnostní kontrola…");
+    const resultBox = document.getElementById("resultBox");
+    resultBox.innerHTML = `<p class="loading">Probíhá bezpečnostní kontrola…</p>`;
+    resultBox.style.display = "block";
 
     try {
         const response = await fetch(
@@ -17,25 +18,29 @@ async function runSecurityTest() {
         const data = await response.json();
 
         if (!data.success) {
-            alert("Chyba komunikace se serverem.");
+            resultBox.innerHTML = `<p style="color:#ff6b6b;">Chyba komunikace se serverem.</p>`;
             return;
         }
 
-        // Výsledek testu – zatím alert, později uděláme pěknou stránku
-        alert(
-            "Výsledek kontroly:\n\n" +
-            "IP adresa: " + data.ip + "\n" +
-            "Stát: " + data.country + "\n" +
-            "Město: " + data.city + "\n" +
-            "ISP: " + data.isp + "\n\n" +
-            "VPN: " + (data.vpn ? "ANO" : "NE") + "\n" +
-            "Riziko: " + data.risk + "\n\n" +
-            "Zařízení: " + data.platform + "\n" +
-            "Prohlížeč: " + data.browser
-        );
+        // VÝSTUP DO RESULT BOXU
+        resultBox.innerHTML = `
+            <h3 class="result-title">Výsledek bezpečnostní kontroly</h3>
 
-    } catch (err) {
-        alert("Server momentálně neodpovídá.");
+            <p><strong>IP adresa:</strong> ${data.ip}</p>
+            <p><strong>Stát:</strong> ${data.country}</p>
+            <p><strong>Město:</strong> ${data.city}</p>
+            <p><strong>ISP:</strong> ${data.isp}</p>
+
+            <p><strong>VPN:</strong> ${data.vpn ? "ANO" : "NE"}</p>
+            <p><strong>Riziko:</strong> ${data.risk}</p>
+
+            <p><strong>Zařízení:</strong> ${data.platform}</p>
+            <p><strong>Prohlížeč:</strong> ${data.browser}</p>
+        `;
+    }
+
+    catch (err) {
+        resultBox.innerHTML = `<p style="color:#ff6b6b;">Server momentálně neodpovídá.</p>`;
         console.error(err);
     }
 }
