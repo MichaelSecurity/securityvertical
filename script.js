@@ -44,8 +44,8 @@ function getTexts() {
             ],
             audit_price: "Cena: 49 Kč",
             audit_btn: "Začít pokročilý audit",
-            audit_wait: "Tato funkce bude aktivní v další verzi.",
-            audit_prep: "Právě připravujeme napojení na bezpečnostní databáze."
+            audit_wait: "Audituje… čekejte prosím…",
+            audit_prep: "Probíhá analýza a vyhodnocení bezpečnostních parametrů."
         },
 
         en: {
@@ -78,8 +78,8 @@ function getTexts() {
             ],
             audit_price: "Price: €2",
             audit_btn: "Start advanced audit",
-            audit_wait: "This feature will be active in the next version.",
-            audit_prep: "We are preparing integrations with security databases."
+            audit_wait: "Running audit… please wait…",
+            audit_prep: "Analyzing network and security parameters."
         },
 
         de: {
@@ -112,8 +112,8 @@ function getTexts() {
             ],
             audit_price: "Preis: 2 €",
             audit_btn: "Erweiterten Audit starten",
-            audit_wait: "Diese Funktion wird in der nächsten Version aktiviert.",
-            audit_prep: "Wir integrieren Sicherheitsdatenbanken."
+            audit_wait: "Audit läuft… bitte warten…",
+            audit_prep: "Analyse der Sicherheitsparameter wird durchgeführt."
         },
 
         pl: {
@@ -146,8 +146,8 @@ function getTexts() {
             ],
             audit_price: "Cena: 10 PLN",
             audit_btn: "Rozpocznij zaawansowany audyt",
-            audit_wait: "Funkcja będzie aktywna w kolejnej wersji.",
-            audit_prep: "Trwa integracja baz danych."
+            audit_wait: "Trwa audyt… proszę czekać…",
+            audit_prep: "Trwa analiza parametrów bezpieczeństwa."
         }
     };
 
@@ -326,7 +326,6 @@ async function runSecurityTest() {
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
         <b>${tx.browser}:</b> ${browserPretty}<br><br>
 
-        <!-- BUTTON → MORE INFO -->
         <div style="text-align:center; margin-bottom:15px;">
             <button id="deep-btn" style="
                 background:#ffd600;
@@ -340,7 +339,6 @@ async function runSecurityTest() {
             ">${tx.more}</button>
         </div>
 
-        <!-- CLOSE -->
         <div style="text-align:center;">
             <button onclick="document.getElementById('sv-modal').remove()"
                 style="
@@ -393,15 +391,73 @@ document.addEventListener("click", (e) => {
 });
 
 // =======================================================
-// PLACEHOLDER – next version
+// REAL DEEP SCAN IMPLEMENTACE
 // =======================================================
-function startDeepScan() {
+async function startDeepScan() {
     const tx = getTexts();
+
+    // Loader
+    showLoader(tx.audit_wait);
+
+    let result;
+    try {
+        const res = await fetch(
+            "https://function-bun-production-6014.up.railway.app/api/deep-scan",
+            { cache: "no-store" }
+        );
+        result = await res.json();
+    } catch (err) {
+        hideLoader();
+        alert("Server momentálně neodpovídá.");
+        return;
+    }
+
+    hideLoader();
+
+    if (!result || !result.success) {
+        showModal(`
+            <h2 style="text-align:center;">${tx.audit_title}</h2>
+            <p>❌ Chyba – audit se nepodařilo dokončit.</p>
+            <div style="text-align:center;margin-top:20px;">
+                <button onclick="document.getElementById('sv-modal').remove()" style="
+                    padding:12px 26px;
+                    background:#ccc;
+                    border:none;
+                    border-radius:10px;
+                    font-weight:bold;
+                    cursor:pointer;
+                ">${tx.close}</button>
+            </div>
+        `);
+        return;
+    }
+
+    const leakDNS = result.leaks.dns ? "⚠️ ANO" : "✔️ NE";
+    const leakWebRTC = result.leaks.webrtc ? "⚠️ ANO" : "✔️ NE";
+    const leakIPv6 = result.leaks.ipv6 ? "⚠️ ANO" : "✔️ NE";
+
+    const incident =
+        result.incident_history?.length
+            ? `${result.incident_history[0].year} – ${result.incident_history[0].type}`
+            : "Žádné incidenty";
 
     showModal(`
         <h2 style="text-align:center;">${tx.audit_title}</h2>
-        <p>🔧 ${tx.audit_wait}</p>
-        <p>${tx.audit_prep}</p>
+
+        <p><b>IP:</b> ${result.ip}</p>
+        <p><b>Skóre:</b> ${result.score}/100</p>
+        <br>
+
+        <p><b>Úniky:</b></p>
+        <ul>
+            <li>DNS: ${leakDNS}</li>
+            <li>WebRTC: ${leakWebRTC}</li>
+            <li>IPv6: ${leakIPv6}</li>
+        </ul>
+
+        <p><b>Reputace poskytovatele:</b> ${result.provider_risk}</p>
+        <p><b>Incidenty:</b> ${incident}</p>
+        <p><b>Blacklisty:</b> ${result.blacklists_hit} / 32</p>
 
         <div style="text-align:center;margin-top:20px;">
             <button onclick="document.getElementById('sv-modal').remove()" style="
