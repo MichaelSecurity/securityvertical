@@ -1,17 +1,15 @@
 // =======================================================
-// SecurityVertical – MULTI-LANGUAGE + REAL RISK ENGINE
-// TOR/VPN/PROXY handled correctly + proper browser detection
-// Single modal + centered + loader overlay
+// SecurityVertical – FINAL STABLE MULTI-LANGUAGE VERSION
+// Better risk engine (no false positives)
 // =======================================================
 
-console.log("SecurityVertical – FINAL MULTI-LANGUAGE version loaded");
+console.log("SecurityVertical – CLEAN STABLE version loaded");
 
 // =======================================================
 // 🌍 Language dictionary
 // =======================================================
 function getTexts() {
 
-    // normalizace jazyků (de-DE → de, pt-BR → pt)
     let rawLang = (document.documentElement.lang || "en").toLowerCase();
     let lang = rawLang.split("-")[0];
 
@@ -25,10 +23,9 @@ function getTexts() {
             isp: "Poskytovatel",
             vpn: "VPN / Anonymita",
             risk: "Bezpečnostní riziko",
-            anon: "Anonymní režim – skutečnou úroveň zabezpečení nelze určit 🟪",
             risk_low: "NÍZKÉ – vše v pořádku 👍",
             risk_mid: "STŘEDNÍ – doporučujeme zkontrolovat nastavení ⚠️",
-            risk_high: "VYSOKÉ – riziková IP / datacentrum / reputace 🚨",
+            risk_high: "VYSOKÉ – riziková IP / VPN / datacentrum 🚨",
             device: "Zařízení",
             browser: "Prohlížeč",
             close: "Zavřít"
@@ -43,10 +40,9 @@ function getTexts() {
             isp: "Provider",
             vpn: "VPN / Anonymity",
             risk: "Security Risk",
-            anon: "Anonymous mode – real security level cannot be determined 🟪",
             risk_low: "LOW – everything looks good 👍",
             risk_mid: "MEDIUM – review recommended ⚠️",
-            risk_high: "HIGH – risky IP / datacenter / reputation 🚨",
+            risk_high: "HIGH – risky IP / VPN / datacenter 🚨",
             device: "Device",
             browser: "Browser",
             close: "Close"
@@ -61,10 +57,9 @@ function getTexts() {
             isp: "Anbieter",
             vpn: "VPN / Anonymität",
             risk: "Sicherheitsrisiko",
-            anon: "Anonymmodus – echtes Sicherheitsniveau kann nicht bestimmt werden 🟪",
             risk_low: "NIEDRIG – alles in Ordnung 👍",
             risk_mid: "MITTEL – Überprüfung empfohlen ⚠️",
-            risk_high: "HOCH – riskante IP / Rechenzentrum / Ruf 🚨",
+            risk_high: "HOCH – riskante IP / VPN / Rechenzentrum 🚨",
             device: "Gerät",
             browser: "Browser",
             close: "Schließen"
@@ -79,67 +74,12 @@ function getTexts() {
             isp: "Dostawca",
             vpn: "VPN / Anonimowość",
             risk: "Ryzyko bezpieczeństwa",
-            anon: "Tryb anonimowy – prawdziwego poziomu bezpieczeństwa nie można określić 🟪",
             risk_low: "NISKIE – wszystko w porządku 👍",
             risk_mid: "ŚREDNIE – zalecana weryfikacja ⚠️",
-            risk_high: "WYSOKIE – ryzykowne IP / centrum danych / reputacja 🚨",
+            risk_high: "WYSOKIE – ryzykowne IP / VPN / centrum danych 🚨",
             device: "Urządzenie",
             browser: "Przeglądarka",
             close: "Zamknij"
-        },
-
-        es: {
-            loading: "Ejecutando verificación de seguridad…",
-            title: "🔍 Resultado de la verificación de seguridad",
-            ip: "Dirección IP",
-            country: "País",
-            city: "Ciudad",
-            isp: "Proveedor",
-            vpn: "VPN / Anonimato",
-            risk: "Riesgo de seguridad",
-            anon: "Modo anónimo – no es posible determinar el nivel real de seguridad 🟪",
-            risk_low: "BAJO – todo parece correcto 👍",
-            risk_mid: "MEDIO – revisión recomendada ⚠️",
-            risk_high: "ALTO – IP riesgosa / centro de datos / reputación 🚨",
-            device: "Dispositivo",
-            browser: "Navegador",
-            close: "Cerrar"
-        },
-
-        fr: {
-            loading: "Analyse de sécurité en cours…",
-            title: "🔍 Résultat de l’analyse de sécurité",
-            ip: "Adresse IP",
-            country: "Pays",
-            city: "Ville",
-            isp: "Fournisseur",
-            vpn: "VPN / Anonymat",
-            risk: "Risque de sécurité",
-            anon: "Mode anonyme – niveau de sécurité réel impossible à déterminer 🟪",
-            risk_low: "FAIBLE – tout est correct 👍",
-            risk_mid: "MOYEN – vérification recommandée ⚠️",
-            risk_high: "ÉLEVÉ – IP risquée / datacenter / réputation 🚨",
-            device: "Appareil",
-            browser: "Navigateur",
-            close: "Fermer"
-        },
-
-        pt: {
-            loading: "Executando verificação de segurança…",
-            title: "🔍 Resultado da verificação de segurança",
-            ip: "Endereço IP",
-            country: "País",
-            city: "Cidade",
-            isp: "Provedor",
-            vpn: "VPN / Anonimato",
-            risk: "Risco de segurança",
-            anon: "Modo anônimo – nível real de segurança não pode ser determinado 🟪",
-            risk_low: "BAIXO – tudo certo 👍",
-            risk_mid: "MÉDIO – revisão recomendada ⚠️",
-            risk_high: "ALTO – IP arriscado / datacenter / reputação 🚨",
-            device: "Dispositivo",
-            browser: "Navegador",
-            close: "Fechar"
         }
     };
 
@@ -147,13 +87,10 @@ function getTexts() {
 }
 
 // =======================================================
-// Safe helper
+// Helpers
 // =======================================================
 const safe = v => v ? v : "—";
 
-// =======================================================
-// Browser detection
-// =======================================================
 function detectBrowser() {
     const ua = navigator.userAgent;
 
@@ -167,6 +104,7 @@ function detectBrowser() {
     if (ua.includes("Firefox")) return "Firefox";
     if (ua.includes("Edg")) return "Edge";
     if (ua.includes("OPR")) return "Opera";
+
     return "Unknown";
 }
 
@@ -211,7 +149,7 @@ function showModal(html) {
         background: rgba(0,0,0,0.65);
         z-index:999999;
         display:flex; align-items:center; justify-content:center;
-        padding:20px; box-sizing:border-box;
+        padding:20px;
     `;
 
     wrap.innerHTML = `
@@ -230,29 +168,41 @@ function showModal(html) {
 }
 
 // =======================================================
-// Risk engine
+// NEW – REALISTIC RISK ENGINE (NO FALSE POSITIVES)
 // =======================================================
 function computeRisk(data, tx) {
-    if (data.vpn || data.tor || data.proxy)
-        return { label: tx.anon, level: "anon" };
 
-    if (data.is_hosting)
-        return { label: tx.risk_mid, level: "mid" };
-
-    if (data.reputation === "bad")
+    // 1) Jasné riziko
+    if (data.tor || data.vpn || data.proxy) {
         return { label: tx.risk_high, level: "high" };
+    }
 
-    if (data.risk <= 2)
+    // 2) Datacentrum = hosting IP = vždy rizikové
+    if (data.is_hosting) {
+        return { label: tx.risk_high, level: "high" };
+    }
+
+    // 3) Reputace "bad"
+    if (data.reputation === "bad") {
+        return { label: tx.risk_high, level: "high" };
+    }
+
+    // 4) Normální domácí / mobilní IP = vždy low
+    if (data.risk <= 4) {
         return { label: tx.risk_low, level: "low" };
+    }
 
-    if (data.risk === 3)
+    // 5) Střední riziko (5–6)
+    if (data.risk <= 6) {
         return { label: tx.risk_mid, level: "mid" };
+    }
 
+    // 6) Zbytek = vysoké
     return { label: tx.risk_high, level: "high" };
 }
 
 // =======================================================
-// MAIN TEST FUNCTION
+// MAIN
 // =======================================================
 async function runSecurityTest() {
 
@@ -279,8 +229,8 @@ async function runSecurityTest() {
         return;
     }
 
-    const browserPretty = detectBrowser();
     const risk = computeRisk(data, tx);
+    const browserPretty = detectBrowser();
 
     showModal(`
         <h2 style="margin-top:0; margin-bottom:18px; text-align:center;">
