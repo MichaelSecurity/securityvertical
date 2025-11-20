@@ -242,7 +242,7 @@ async function runSecurityTest() {
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
         <b>${tx.browser}:</b> ${browserPretty}<br><br>
 
-        <!-- BUTTON CHCETE VĚDĚT VÍC – TADY NAD ZAVŘÍT -->
+        <!-- TLAČÍTKO CHCETE VĚDĚT VÍC? NAD ZAVŘÍT -->
         <div style="text-align:center; margin-bottom:15px;">
             <button id="deep-btn" style="
                 background:#ffd600;
@@ -312,7 +312,8 @@ function startDeepScan() {
       <p>Právě připravujeme napojení na bezpečnostní databáze.</p>
 
       <div style="text-align:center;margin-top:20px;">
-        <button onclick="document.getElementById('sv-modal').remove()" style="
+        <button onclick="document.getElementById('sv-modal').remove()"
+            style="
               padding:12px 26px;
               background:#ccc;
               border:none;
