@@ -1,6 +1,6 @@
 // =======================================================
 // SecurityVertical – FINAL STABLE MULTI-LANGUAGE VERSION
-// Better risk engine (no false positives)
+// With ANON MODE message & no false positives
 // =======================================================
 
 console.log("SecurityVertical – CLEAN STABLE version loaded");
@@ -26,6 +26,7 @@ function getTexts() {
             risk_low: "NÍZKÉ – vše v pořádku 👍",
             risk_mid: "STŘEDNÍ – doporučujeme zkontrolovat nastavení ⚠️",
             risk_high: "VYSOKÉ – riziková IP / VPN / datacentrum 🚨",
+            anon: "Anonymní režim – Vaše skutečná identita je skrytá.",
             device: "Zařízení",
             browser: "Prohlížeč",
             close: "Zavřít"
@@ -43,6 +44,7 @@ function getTexts() {
             risk_low: "LOW – everything looks good 👍",
             risk_mid: "MEDIUM – review recommended ⚠️",
             risk_high: "HIGH – risky IP / VPN / datacenter 🚨",
+            anon: "Anonymous mode – Your real identity is hidden.",
             device: "Device",
             browser: "Browser",
             close: "Close"
@@ -60,6 +62,7 @@ function getTexts() {
             risk_low: "NIEDRIG – alles in Ordnung 👍",
             risk_mid: "MITTEL – Überprüfung empfohlen ⚠️",
             risk_high: "HOCH – riskante IP / VPN / Rechenzentrum 🚨",
+            anon: "Anonymmodus – Ihre wahre Identität ist verborgen.",
             device: "Gerät",
             browser: "Browser",
             close: "Schließen"
@@ -77,6 +80,7 @@ function getTexts() {
             risk_low: "NISKIE – wszystko w porządku 👍",
             risk_mid: "ŚREDNIE – zalecana weryfikacja ⚠️",
             risk_high: "WYSOKIE – ryzykowne IP / VPN / centrum danych 🚨",
+            anon: "Tryb anonimowy – Twoja prawdziwa tożsamość jest ukryta.",
             device: "Urządzenie",
             browser: "Przeglądarka",
             close: "Zamknij"
@@ -168,36 +172,36 @@ function showModal(html) {
 }
 
 // =======================================================
-// NEW – REALISTIC RISK ENGINE (NO FALSE POSITIVES)
+// NEW – REALISTIC RISK ENGINE WITH ANON MODE
 // =======================================================
 function computeRisk(data, tx) {
 
-    // 1) Jasné riziko
+    // 1) VPN / TOR / Proxy → anonymní režim
     if (data.tor || data.vpn || data.proxy) {
-        return { label: tx.risk_high, level: "high" };
+        return { label: tx.anon, level: "anon" };
     }
 
-    // 2) Datacentrum = hosting IP = vždy rizikové
+    // 2) Datacentrum / hosting = anonymní režim
     if (data.is_hosting) {
-        return { label: tx.risk_high, level: "high" };
+        return { label: tx.anon, level: "anon" };
     }
 
-    // 3) Reputace "bad"
+    // 3) Špatná reputace = vysoké riziko
     if (data.reputation === "bad") {
         return { label: tx.risk_high, level: "high" };
     }
 
-    // 4) Normální domácí / mobilní IP = vždy low
+    // 4) Normální domácí/mobilní IP = nízké riziko
     if (data.risk <= 4) {
         return { label: tx.risk_low, level: "low" };
     }
 
-    // 5) Střední riziko (5–6)
+    // 5) Střední riziko 5–6
     if (data.risk <= 6) {
         return { label: tx.risk_mid, level: "mid" };
     }
 
-    // 6) Zbytek = vysoké
+    // 6) Jinak vysoké
     return { label: tx.risk_high, level: "high" };
 }
 
