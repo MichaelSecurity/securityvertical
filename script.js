@@ -1,6 +1,7 @@
 // =======================================================
 // SecurityVertical – FINAL MULTI-LANGUAGE SAFE VERSION
 // Trusted ISP → LOW, hosting → ANON, VPN/TOR → ANON
+// + REAL DATA z IPQS (deep scan)
 // =======================================================
 
 console.log("SecurityVertical – FINAL MULTI VERSION loaded");
@@ -336,7 +337,7 @@ function getTexts() {
 // =======================================================
 // Helpers
 // =======================================================
-const safe = v =>
+const safe = (v) =>
   v === null || v === undefined || v === "" ? "—" : v;
 
 function detectBrowser() {
@@ -376,21 +377,17 @@ function showLoader(text) {
   const div = document.createElement("div");
   div.id = "sv-loader";
   div.style = `
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
+    position: fixed; inset: 0;
+    width:100vw; height:100vh;
     background: rgba(0,0,0,0.6);
-    z-index: 999998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 0 20px;
-    box-sizing: border-box;
+    z-index:999998;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px; color:white; font-family:Arial;
+    text-align:center;
+    padding:0 20px;
+    box-sizing:border-box;
   `;
   div.innerHTML = text;
   document.body.appendChild(div);
@@ -402,7 +399,7 @@ function hideLoader() {
 }
 
 // =======================================================
-// Modal – vycentrovaný i na mobilu + scroll, když je vysoký
+// Modal (vystředěný i na mobilu)
 // =======================================================
 function showModal(html) {
   const old = document.getElementById("sv-modal");
@@ -411,41 +408,31 @@ function showModal(html) {
   const wrap = document.createElement("div");
   wrap.id = "sv-modal";
   wrap.style = `
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
+    position: fixed; inset: 0;
+    width:100vw; height:100vh;
     background: rgba(0,0,0,0.65);
-    z-index: 999999;
-    overflow-y: auto;
+    z-index:999999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px 12px;
+    box-sizing:border-box;
   `;
 
   wrap.innerHTML = `
     <div style="
-      min-height: 100vh;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px 16px;
-      box-sizing: border-box;
+      width:100%;
+      max-width:460px;
+      max-height:90vh;
+      overflow-y:auto;
+      background:#111; color:#eee;
+      padding:28px;
+      border-radius:14px;
+      font-family:Arial; line-height:1.55;
+      box-shadow:0 0 25px rgba(0,0,0,0.45);
+      box-sizing:border-box;
     ">
-      <div style="
-        width: 100%;
-        max-width: 460px;
-        background: #111;
-        color: #eee;
-        padding: 28px;
-        border-radius: 14px;
-        font-family: Arial, sans-serif;
-        line-height: 1.55;
-        box-shadow: 0 0 25px rgba(0,0,0,0.45);
-        box-sizing: border-box;
-        max-height: calc(100vh - 40px);
-        overflow-y: auto;
-      ">
-        ${html}
-      </div>
+      ${html}
     </div>
   `;
 
@@ -473,7 +460,7 @@ function computeRisk(data, tx) {
     "uvalnet"
   ];
 
-  const isTrusted = trustedProviders.some(p => isp.includes(p));
+  const isTrusted = trustedProviders.some((p) => isp.includes(p));
 
   if (data.tor || data.vpn || data.proxy)
     return { label: tx.anon, level: "anon" };
@@ -481,13 +468,10 @@ function computeRisk(data, tx) {
   if (data.is_hosting && isTrusted)
     return { label: tx.anon, level: "anon" };
 
-  if (data.is_hosting)
-    return { label: tx.risk_mid, level: "mid" };
+  if (data.is_hosting) return { label: tx.risk_mid, level: "mid" };
 
-  if (isTrusted)
-    return { label: tx.risk_low, level: "low" };
+  if (isTrusted) return { label: tx.risk_low, level: "low" };
 
-  // data.risk je už normalizované 0–10 z backendu
   if (data.risk <= 4) return { label: tx.risk_low, level: "low" };
   if (data.risk <= 6) return { label: tx.risk_mid, level: "mid" };
 
@@ -557,12 +541,9 @@ async function runSecurityTest() {
     <div style="text-align:center;">
       <button onclick="document.getElementById('sv-modal').remove()"
         style="
-          background:#d8d8d8;
-          color:#000;
-          padding:12px 26px;
-          border-radius:10px;
-          border:none;
-          font-weight:bold;
+          background:#d8d8d8; color:#000;
+          padding:12px 26px; border-radius:10px;
+          border:none; font-weight:bold;
           cursor:pointer;
         ">
         ${tx.close}
@@ -574,7 +555,7 @@ async function runSecurityTest() {
 // =======================================================
 // PAID AUDIT MODAL (STEP 1)
 // =======================================================
-document.addEventListener("click", e => {
+document.addEventListener("click", (e) => {
   if (e.target.id === "deep-btn") {
     const tx = getTexts();
 
@@ -663,6 +644,12 @@ async function startDeepScan() {
   ) {
     const first = result.incident_history[0];
     incident = `${safe(first.year)} – ${safe(first.type)}`;
+  } else if (result.abuse_velocity || result.recent_abuse) {
+    // fallback na text z backendu
+    const year = new Date().getFullYear();
+    incident = `${year} – ${safe(
+      result.abuse_velocity || "Recent abuse activity detected"
+    )}`;
   }
 
   showModal(`
