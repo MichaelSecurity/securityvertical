@@ -161,7 +161,6 @@ function computeRisk(data, tx) {
 
     const isp = (detectISP(data) || "").toLowerCase();
 
-    // Trusted Czech ISPs – never high risk
     const trustedProviders = [
         "poda", "o2", "t-mobile", "vodafone",
         "upc", "nejtv", "century", "radiolan",
@@ -170,31 +169,25 @@ function computeRisk(data, tx) {
 
     const isTrustedISP = trustedProviders.some(p => isp.includes(p));
 
-    // TOR / VPN / PROXY → anonymní režim
     if (data.tor || data.vpn || data.proxy) {
         return { label: tx.anon, level: "anon" };
     }
 
-    // Hosting/datacentrum → ANON pokud ISP je reálný provider
     if (data.is_hosting && isTrustedISP) {
         return { label: tx.anon, level: "anon" };
     }
 
-    // Hosting neznámého typu → střední riziko
     if (data.is_hosting && !isTrustedISP) {
         return { label: tx.risk_mid, level: "mid" };
     }
 
-    // Trusted ISP = LOW
     if (isTrustedISP) {
         return { label: tx.risk_low, level: "low" };
     }
 
-    // Standardní risk metrika
     if (data.risk <= 4) return { label: tx.risk_low, level: "low" };
     if (data.risk <= 6) return { label: tx.risk_mid, level: "mid" };
 
-    // Špatná reputace IP
     if (data.reputation === "bad") {
         return { label: tx.risk_high, level: "high" };
     }
@@ -249,6 +242,21 @@ async function runSecurityTest() {
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
         <b>${tx.browser}:</b> ${browserPretty}<br><br>
 
+        <!-- BUTTON CHCETE VĚDĚT VÍC – TADY NAD ZAVŘÍT -->
+        <div style="text-align:center; margin-bottom:15px;">
+            <button id="deep-btn" style="
+                background:#ffd600;
+                color:#000;
+                padding:12px 24px;
+                border-radius:10px;
+                border:none;
+                font-weight:bold;
+                cursor:pointer;
+                margin-bottom:10px;
+            ">Chcete vědět víc?</button>
+        </div>
+
+        <!-- ZAVŘÍT -->
         <div style="text-align:center;">
             <button onclick="document.getElementById('sv-modal').remove()"
                 style="
@@ -261,33 +269,6 @@ async function runSecurityTest() {
         </div>
     `);
 }
-
-
-
-// =======================================================
-// AUTO-PŘIDÁNÍ TLAČÍTKA „Chcete vědět víc?“
-// =======================================================
-window.addEventListener("DOMContentLoaded", () => {
-    const heroSection = document.querySelector(".hero");
-    if (!heroSection) return;
-
-    const btn = document.createElement("button");
-    btn.id = "deep-btn";
-    btn.textContent = "Chcete vědět víc?";
-    btn.style.cssText = `
-      margin-top: 15px;
-      padding: 12px 20px;
-      background: #ffd600;
-      border-radius: 10px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 16px;
-    `;
-
-    heroSection.appendChild(btn);
-});
-
 
 // =======================================================
 // MODAL PLACENÉ VERZE
@@ -320,7 +301,6 @@ document.addEventListener("click", (e) => {
       `);
     }
 });
-
 
 // =======================================================
 // PLACEHOLDER PRO BUDOUCÍ PLACENOU FUNKCI
