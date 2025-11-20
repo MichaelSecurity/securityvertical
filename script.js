@@ -1,7 +1,6 @@
 // =======================================================
 // SecurityVertical – FINAL MULTI-LANGUAGE SAFE VERSION
 // Trusted ISP → LOW, hosting → ANON, VPN/TOR → ANON
-// Zero bullshit dvořák-riziko
 // =======================================================
 
 console.log("SecurityVertical – FINAL MULTI VERSION loaded");
@@ -36,6 +35,13 @@ function getTexts() {
             more: "Chcete vědět víc?",
             audit_title: "Pokročilý bezpečnostní audit",
             audit_desc: "Tento audit zkontroluje:",
+            audit_items: [
+                "Blacklisty / incidentní databáze",
+                "Zranitelné porty",
+                "Historické útoky",
+                "Reputace poskytovatele",
+                "Úniky DNS / WebRTC / IPv6"
+            ],
             audit_price: "Cena: 49 Kč",
             audit_btn: "Začít pokročilý audit",
             audit_wait: "Tato funkce bude aktivní v další verzi.",
@@ -63,10 +69,17 @@ function getTexts() {
             more: "Learn more?",
             audit_title: "Advanced Security Audit",
             audit_desc: "This audit checks:",
+            audit_items: [
+                "Blacklists / incident databases",
+                "Vulnerable ports",
+                "Historical attacks",
+                "Provider reputation",
+                "DNS / WebRTC / IPv6 leaks"
+            ],
             audit_price: "Price: €2",
             audit_btn: "Start advanced audit",
             audit_wait: "This feature will be active in the next version.",
-            audit_prep: "We are preparing database integrations."
+            audit_prep: "We are preparing integrations with security databases."
         },
 
         de: {
@@ -90,6 +103,13 @@ function getTexts() {
             more: "Mehr erfahren?",
             audit_title: "Erweiterter Sicherheitsaudit",
             audit_desc: "Dieser Audit prüft:",
+            audit_items: [
+                "Blacklists / Incident-Datenbanken",
+                "Verwundbare Ports",
+                "Historische Angriffe",
+                "Provider-Reputation",
+                "DNS / WebRTC / IPv6 Leaks"
+            ],
             audit_price: "Preis: 2 €",
             audit_btn: "Erweiterten Audit starten",
             audit_wait: "Diese Funktion wird in der nächsten Version aktiviert.",
@@ -117,6 +137,13 @@ function getTexts() {
             more: "Dowiedz się więcej",
             audit_title: "Zaawansowany audyt bezpieczeństwa",
             audit_desc: "Ten audyt sprawdzi:",
+            audit_items: [
+                "Blacklisty / bazy incydentów",
+                "Wrażliwe porty",
+                "Historyczne ataki",
+                "Reputacja dostawcy",
+                "Wycieki DNS / WebRTC / IPv6"
+            ],
             audit_price: "Cena: 10 PLN",
             audit_btn: "Rozpocznij zaawansowany audyt",
             audit_wait: "Funkcja będzie aktywna w kolejnej wersji.",
@@ -319,7 +346,8 @@ async function runSecurityTest() {
                 style="
                     background:#d8d8d8; color:#000;
                     padding:12px 26px; border-radius:10px;
-                    border:none; font-weight:bold; cursor:pointer;
+                    border:none; font-weight:bold;
+                    cursor:pointer;
                 ">
                 ${tx.close}
             </button>
@@ -339,12 +367,13 @@ document.addEventListener("click", (e) => {
             <h2 style="text-align:center;">${tx.audit_title}</h2>
 
             <p>${tx.audit_desc}</p>
+
             <ul>
-                <li>Blacklisty / Incidentní databáze</li>
-                <li>Zranitelné porty</li>
-                <li>Historické útoky</li>
-                <li>Reputace poskytovatele</li>
-                <li>Úniky DNS / WebRTC / IPv6</li>
+                <li>${tx.audit_items[0]}</li>
+                <li>${tx.audit_items[1]}</li>
+                <li>${tx.audit_items[2]}</li>
+                <li>${tx.audit_items[3]}</li>
+                <li>${tx.audit_items[4]}</li>
             </ul>
 
             <p><b>${tx.audit_price}</b></p>
