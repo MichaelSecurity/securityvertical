@@ -366,7 +366,7 @@ function detectISP(data) {
 }
 
 // =======================================================
-// Loader
+// Loader – full screen, vycentrovaný i na mobilech
 // =======================================================
 function showLoader(text) {
     const old = document.getElementById("sv-loader");
@@ -375,15 +375,22 @@ function showLoader(text) {
     const div = document.createElement("div");
     div.id = "sv-loader";
     div.style = `
-        position: fixed; top:0; left:0;
-        width:100vw; height:100vh;
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
         background: rgba(0,0,0,0.6);
-        z-index:999998;
-        display:flex; align-items:center; justify-content:center;
-        font-size:22px; color:white; font-family:Arial;
-        text-align:center;
-        padding:0 20px;
-        box-sizing:border-box;
+        z-index: 999998;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+        font-family: Arial;
+        text-align: center;
+        padding: 0 20px;
+        box-sizing: border-box;
     `;
     div.innerHTML = text;
     document.body.appendChild(div);
@@ -395,7 +402,7 @@ function hideLoader() {
 }
 
 // =======================================================
-// Modal
+// Modal – perfektně vycentrovaný i na telefonu
 // =======================================================
 function showModal(html) {
     const old = document.getElementById("sv-modal");
@@ -404,21 +411,35 @@ function showModal(html) {
     const wrap = document.createElement("div");
     wrap.id = "sv-modal";
     wrap.style = `
-        position: fixed; top:0; left:0;
-        width:100vw; height:100vh;
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
         background: rgba(0,0,0,0.65);
-        z-index:999999;
-        display:flex; align-items:center; justify-content:center;
-        padding:20px;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
     `;
 
     wrap.innerHTML = `
         <div style="
-            width:100%; max-width:460px;
-            background:#111; color:#eee;
-            padding:28px; border-radius:14px;
-            font-family:Arial; line-height:1.55;
+            width: 100%;
+            max-width: 460px;
+            max-height: calc(100dvh - 40px);
+            max-height: calc(100vh - 40px);
+            background:#111;
+            color:#eee;
+            padding:28px;
+            border-radius:14px;
+            font-family:Arial;
+            line-height:1.55;
             box-shadow:0 0 25px rgba(0,0,0,0.45);
+            overflow-y:auto;
+            box-sizing:border-box;
         ">
             ${html}
         </div>
