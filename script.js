@@ -9,9 +9,15 @@ console.log("SecurityVertical – FINAL MULTI VERSION loaded");
 // 🌍 Language dictionary
 // =======================================================
 function getTexts() {
-
     let rawLang = (document.documentElement.lang || "en").toLowerCase();
-    let lang = rawLang.split("-")[0];
+
+    // speciální mapování pro pt-BR → ptbr
+    let lang;
+    if (rawLang.startsWith("pt-br")) {
+        lang = "ptbr";
+    } else {
+        lang = rawLang.split("-")[0];
+    }
 
     const t = {
         cs: {
@@ -45,7 +51,18 @@ function getTexts() {
             audit_price: "Cena: 49 Kč",
             audit_btn: "Začít pokročilý audit",
             audit_wait: "Audituje… čekejte prosím…",
-            audit_prep: "Probíhá analýza a vyhodnocení bezpečnostních parametrů."
+            audit_prep: "Probíhá analýza a vyhodnocení bezpečnostních parametrů.",
+
+            // deep-scan labels
+            score_label: "Skóre",
+            leaks_label: "Úniky",
+            provider_rep_label: "Reputace poskytovatele",
+            incidents_label: "Incidenty",
+            blacklists_label: "Blacklisty",
+            no_incidents: "Žádné zaznamenané incidenty",
+            yes: "ANO",
+            no: "NE",
+            error_generic: "Chyba – audit se nepodařilo dokončit."
         },
 
         en: {
@@ -79,7 +96,17 @@ function getTexts() {
             audit_price: "Price: €2",
             audit_btn: "Start advanced audit",
             audit_wait: "Running audit… please wait…",
-            audit_prep: "Analyzing network and security parameters."
+            audit_prep: "Analyzing network and security parameters.",
+
+            score_label: "Score",
+            leaks_label: "Leaks",
+            provider_rep_label: "Provider reputation",
+            incidents_label: "Incidents",
+            blacklists_label: "Blacklists",
+            no_incidents: "No recorded incidents",
+            yes: "YES",
+            no: "NO",
+            error_generic: "Error – audit could not be completed."
         },
 
         de: {
@@ -113,7 +140,17 @@ function getTexts() {
             audit_price: "Preis: 2 €",
             audit_btn: "Erweiterten Audit starten",
             audit_wait: "Audit läuft… bitte warten…",
-            audit_prep: "Analyse der Sicherheitsparameter wird durchgeführt."
+            audit_prep: "Analyse der Sicherheitsparameter wird durchgeführt.",
+
+            score_label: "Punktzahl",
+            leaks_label: "Leaks",
+            provider_rep_label: "Provider-Reputation",
+            incidents_label: "Vorfälle",
+            blacklists_label: "Blacklists",
+            no_incidents: "Keine verzeichneten Vorfälle",
+            yes: "JA",
+            no: "NEIN",
+            error_generic: "Fehler – Audit konnte nicht abgeschlossen werden."
         },
 
         pl: {
@@ -147,7 +184,149 @@ function getTexts() {
             audit_price: "Cena: 10 PLN",
             audit_btn: "Rozpocznij zaawansowany audyt",
             audit_wait: "Trwa audyt… proszę czekać…",
-            audit_prep: "Trwa analiza parametrów bezpieczeństwa."
+            audit_prep: "Trwa analiza parametrów bezpieczeństwa.",
+
+            score_label: "Wynik",
+            leaks_label: "Wycieki",
+            provider_rep_label: "Reputacja dostawcy",
+            incidents_label: "Incydenty",
+            blacklists_label: "Blacklisty",
+            no_incidents: "Brak zarejestrowanych incydentów",
+            yes: "TAK",
+            no: "NIE",
+            error_generic: "Błąd – nie udało się zakończyć audytu."
+        },
+
+        es: {
+            loading: "Ejecutando verificación de seguridad…",
+            title: "🔍 Resultado del análisis de seguridad",
+            ip: "Dirección IP",
+            country: "País",
+            city: "Ciudad",
+            isp: "Proveedor",
+            risk: "Riesgo de seguridad",
+
+            risk_low: "BAJO – todo parece correcto 👍",
+            risk_mid: "MEDIO – se recomienda revisar la configuración ⚠️",
+            risk_high: "ALTO – IP de riesgo / mala reputación 🚨",
+
+            anon: "Modo anónimo – tu identidad real está oculta.",
+            device: "Dispositivo",
+            browser: "Navegador",
+            close: "Cerrar",
+
+            more: "¿Quieres saber más?",
+            audit_title: "Auditoría avanzada de seguridad",
+            audit_desc: "Esta auditoría comprueba:",
+            audit_items: [
+                "Listas negras / bases de incidentes",
+                "Puertos potencialmente vulnerables",
+                "Historial de ataques asociados a la IP",
+                "Reputación del proveedor",
+                "Fugas de DNS / WebRTC / IPv6"
+            ],
+            audit_price: "Precio: 2 €",
+            audit_btn: "Iniciar auditoría avanzada",
+            audit_wait: "Ejecutando auditoría… espera, por favor…",
+            audit_prep: "Analizando parámetros de red y seguridad.",
+
+            score_label: "Puntuación",
+            leaks_label: "Fugas",
+            provider_rep_label: "Reputación del proveedor",
+            incidents_label: "Incidentes",
+            blacklists_label: "Listas negras",
+            no_incidents: "No se han registrado incidentes",
+            yes: "SÍ",
+            no: "NO",
+            error_generic: "Error – no se ha podido completar la auditoría."
+        },
+
+        fr: {
+            loading: "Analyse de sécurité en cours…",
+            title: "🔍 Résultat de l’analyse de sécurité",
+            ip: "Adresse IP",
+            country: "Pays",
+            city: "Ville",
+            isp: "Fournisseur",
+            risk: "Risque de sécurité",
+
+            risk_low: "FAIBLE – tout semble correct 👍",
+            risk_mid: "MOYEN – vérification recommandée ⚠️",
+            risk_high: "ÉLEVÉ – IP risquée / mauvaise réputation 🚨",
+
+            anon: "Mode anonyme – votre identité réelle est masquée.",
+            device: "Appareil",
+            browser: "Navigateur",
+            close: "Fermer",
+
+            more: "En savoir plus ?",
+            audit_title: "Audit de sécurité avancé",
+            audit_desc: "Cet audit vérifie :",
+            audit_items: [
+                "Listes noires / bases d’incidents",
+                "Ports potentiellement vulnérables",
+                "Historique d’attaques liés à l’IP",
+                "Réputation du fournisseur",
+                "Fuites DNS / WebRTC / IPv6"
+            ],
+            audit_price: "Prix : 2 €",
+            audit_btn: "Lancer l’audit avancé",
+            audit_wait: "Audit en cours… veuillez patienter…",
+            audit_prep: "Analyse des paramètres réseau et de sécurité.",
+
+            score_label: "Score",
+            leaks_label: "Fuites",
+            provider_rep_label: "Réputation du fournisseur",
+            incidents_label: "Incidents",
+            blacklists_label: "Listes noires",
+            no_incidents: "Aucun incident enregistré",
+            yes: "OUI",
+            no: "NON",
+            error_generic: "Erreur – l’audit n’a pas pu être mené à bien."
+        },
+
+        ptbr: {
+            loading: "Executando verificação de segurança…",
+            title: "🔍 Resultado da verificação de segurança",
+            ip: "Endereço IP",
+            country: "País",
+            city: "Cidade",
+            isp: "Provedor",
+            risk: "Risco de segurança",
+
+            risk_low: "BAIXO – nenhum problema aparente 👍",
+            risk_mid: "MÉDIO – recomendada revisão das configurações ⚠️",
+            risk_high: "ALTO – IP arriscado / má reputação 🚨",
+
+            anon: "Modo anônimo – sua identidade real está ocultada.",
+            device: "Dispositivo",
+            browser: "Navegador",
+            close: "Fechar",
+
+            more: "Quer saber mais?",
+            audit_title: "Auditoria avançada de segurança",
+            audit_desc: "Esta auditoria analisa:",
+            audit_items: [
+                "Listas de bloqueio / bases de incidentes",
+                "Portas potencialmente vulneráveis",
+                "Histórico de ataques associados ao IP",
+                "Reputação do provedor de acesso",
+                "Vazamentos de DNS / WebRTC / IPv6"
+            ],
+            audit_price: "Preço: R$ 9",
+            audit_btn: "Iniciar auditoria avançada",
+            audit_wait: "Executando auditoria… aguarde…",
+            audit_prep: "Analisando parâmetros de rede e segurança.",
+
+            score_label: "Pontuação",
+            leaks_label: "Vazamentos",
+            provider_rep_label: "Reputação do provedor",
+            incidents_label: "Incidentes",
+            blacklists_label: "Listas de bloqueio",
+            no_incidents: "Nenhum incidente registrado",
+            yes: "SIM",
+            no: "NÃO",
+            error_generic: "Erro – não foi possível concluir a auditoria."
         }
     };
 
@@ -157,7 +336,7 @@ function getTexts() {
 // =======================================================
 // Helpers
 // =======================================================
-const safe = v => v ? v : "—";
+const safe = v => (v === null || v === undefined || v === "") ? "—" : v;
 
 function detectBrowser() {
     const ua = navigator.userAgent;
@@ -202,6 +381,9 @@ function showLoader(text) {
         z-index:999998;
         display:flex; align-items:center; justify-content:center;
         font-size:22px; color:white; font-family:Arial;
+        text-align:center;
+        padding:0 20px;
+        box-sizing:border-box;
     `;
     div.innerHTML = text;
     document.body.appendChild(div);
@@ -249,7 +431,6 @@ function showModal(html) {
 // Risk engine
 // =======================================================
 function computeRisk(data, tx) {
-
     const isp = (detectISP(data) || "").toLowerCase();
 
     const trustedProviders = [
@@ -285,7 +466,6 @@ function computeRisk(data, tx) {
 // MAIN TEST
 // =======================================================
 async function runSecurityTest() {
-
     const tx = getTexts();
     showLoader(tx.loading);
 
@@ -354,11 +534,10 @@ async function runSecurityTest() {
 }
 
 // =======================================================
-// PAID AUDIT MODAL
+// PAID AUDIT MODAL (STEP 1)
 // =======================================================
 document.addEventListener("click", (e) => {
     if (e.target.id === "deep-btn") {
-
         const tx = getTexts();
 
         showModal(`
@@ -391,12 +570,11 @@ document.addEventListener("click", (e) => {
 });
 
 // =======================================================
-// REAL DEEP SCAN IMPLEMENTACE
+// REAL DEEP SCAN IMPLEMENTACE (STEP 2)
 // =======================================================
 async function startDeepScan() {
     const tx = getTexts();
 
-    // Loader
     showLoader(tx.audit_wait);
 
     let result;
@@ -417,7 +595,7 @@ async function startDeepScan() {
     if (!result || !result.success) {
         showModal(`
             <h2 style="text-align:center;">${tx.audit_title}</h2>
-            <p>❌ Chyba – audit se nepodařilo dokončit.</p>
+            <p>❌ ${tx.error_generic}</p>
             <div style="text-align:center;margin-top:20px;">
                 <button onclick="document.getElementById('sv-modal').remove()" style="
                     padding:12px 26px;
@@ -432,32 +610,37 @@ async function startDeepScan() {
         return;
     }
 
-    const leakDNS = result.leaks.dns ? "⚠️ ANO" : "✔️ NE";
-    const leakWebRTC = result.leaks.webrtc ? "⚠️ ANO" : "✔️ NE";
-    const leakIPv6 = result.leaks.ipv6 ? "⚠️ ANO" : "✔️ NE";
+    const leaks = result.leaks || {};
+    const yes = tx.yes || "YES";
+    const no = tx.no || "NO";
 
-    const incident =
-        result.incident_history?.length
-            ? `${result.incident_history[0].year} – ${result.incident_history[0].type}`
-            : "Žádné incidenty";
+    const leakDNS = leaks.dns ? `⚠️ ${yes}` : `✔️ ${no}`;
+    const leakWebRTC = leaks.webrtc ? `⚠️ ${yes}` : `✔️ ${no}`;
+    const leakIPv6 = leaks.ipv6 ? `⚠️ ${yes}` : `✔️ ${no}`;
+
+    let incident = tx.no_incidents;
+    if (Array.isArray(result.incident_history) && result.incident_history.length > 0) {
+        const first = result.incident_history[0];
+        incident = `${safe(first.year)} – ${safe(first.type)}`;
+    }
 
     showModal(`
         <h2 style="text-align:center;">${tx.audit_title}</h2>
 
-        <p><b>IP:</b> ${result.ip}</p>
-        <p><b>Skóre:</b> ${result.score}/100</p>
+        <p><b>${tx.ip}:</b> ${safe(result.ip)}</p>
+        <p><b>${tx.score_label}:</b> ${safe(result.score)}/100</p>
         <br>
 
-        <p><b>Úniky:</b></p>
+        <p><b>${tx.leaks_label}:</b></p>
         <ul>
             <li>DNS: ${leakDNS}</li>
             <li>WebRTC: ${leakWebRTC}</li>
             <li>IPv6: ${leakIPv6}</li>
         </ul>
 
-        <p><b>Reputace poskytovatele:</b> ${result.provider_risk}</p>
-        <p><b>Incidenty:</b> ${incident}</p>
-        <p><b>Blacklisty:</b> ${result.blacklists_hit} / 32</p>
+        <p><b>${tx.provider_rep_label}:</b> ${safe(result.provider_risk)}</p>
+        <p><b>${tx.incidents_label}:</b> ${incident}</p>
+        <p><b>${tx.blacklists_label}:</b> ${safe(result.blacklists_hit)} / 32</p>
 
         <div style="text-align:center;margin-top:20px;">
             <button onclick="document.getElementById('sv-modal').remove()" style="
