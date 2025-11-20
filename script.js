@@ -261,3 +261,85 @@ async function runSecurityTest() {
         </div>
     `);
 }
+
+
+
+// =======================================================
+// AUTO-PŘIDÁNÍ TLAČÍTKA „Chcete vědět víc?“
+// =======================================================
+window.addEventListener("DOMContentLoaded", () => {
+    const heroSection = document.querySelector(".hero");
+    if (!heroSection) return;
+
+    const btn = document.createElement("button");
+    btn.id = "deep-btn";
+    btn.textContent = "Chcete vědět víc?";
+    btn.style.cssText = `
+      margin-top: 15px;
+      padding: 12px 20px;
+      background: #ffd600;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    `;
+
+    heroSection.appendChild(btn);
+});
+
+
+// =======================================================
+// MODAL PLACENÉ VERZE
+// =======================================================
+document.addEventListener("click", (e) => {
+    if (e.target.id === "deep-btn") {
+      showModal(`
+        <h2 style="text-align:center;">Pokročilý bezpečnostní audit</h2>
+        <p>Tento audit zkontroluje:</p>
+        <ul>
+          <li>Blacklisty (30+ bezpečnostních databází)</li>
+          <li>Zranitelné porty</li>
+          <li>Historické incidenty IP</li>
+          <li>Rizikovost poskytovatele</li>
+          <li>Úniky dat (DNS/WebRTC/IPv6)</li>
+        </ul>
+
+        <p><b>Cena: 49 Kč</b></p>
+
+        <div style="text-align:center;margin-top:20px;">
+          <button onclick="startDeepScan()" style="
+              padding:12px 26px;
+              background:#ffd600;
+              border:none;
+              border-radius:10px;
+              font-weight:bold;
+              cursor:pointer;
+          ">Začít pokročilý audit</button>
+        </div>
+      `);
+    }
+});
+
+
+// =======================================================
+// PLACEHOLDER PRO BUDOUCÍ PLACENOU FUNKCI
+// =======================================================
+function startDeepScan() {
+    showModal(`
+      <h2 style="text-align:center;">Pokročilý audit</h2>
+      <p>🔧 Tato funkce bude aktivní v další verzi.</p>
+      <p>Právě připravujeme napojení na bezpečnostní databáze.</p>
+
+      <div style="text-align:center;margin-top:20px;">
+        <button onclick="document.getElementById('sv-modal').remove()" style="
+              padding:12px 26px;
+              background:#ccc;
+              border:none;
+              border-radius:10px;
+              font-weight:bold;
+              cursor:pointer;
+        ">Zavřít</button>
+      </div>
+    `);
+}
