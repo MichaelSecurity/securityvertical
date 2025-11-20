@@ -1,9 +1,10 @@
 // =======================================================
-// SecurityVertical – FINAL STABLE MULTI-LANGUAGE VERSION
-// With ANON MODE message, fixed ISP detection & no false positives
+// SecurityVertical – FINAL SAFE VERSION
+// Trusted ISP → LOW, hosting → ANON, VPN/TOR → ANON
+// No bullshit false positives
 // =======================================================
 
-console.log("SecurityVertical – CLEAN STABLE version loaded");
+console.log("SecurityVertical – FINAL SAFE VERSION loaded");
 
 // =======================================================
 // 🌍 Language dictionary
@@ -21,12 +22,14 @@ function getTexts() {
             country: "Stát",
             city: "Město",
             isp: "Poskytovatel",
-            vpn: "VPN / Anonymita",
             risk: "Bezpečnostní riziko",
+
             risk_low: "NÍZKÉ – vše v pořádku 👍",
             risk_mid: "STŘEDNÍ – doporučujeme zkontrolovat nastavení ⚠️",
-            risk_high: "VYSOKÉ – riziková IP / VPN / datacentrum 🚨",
+            risk_high: "VYSOKÉ – riziková IP / útok / špatná reputace 🚨",
+
             anon: "Anonymní režim – Vaše skutečná identita je skrytá.",
+
             device: "Zařízení",
             browser: "Prohlížeč",
             close: "Zavřít"
@@ -39,12 +42,14 @@ function getTexts() {
             country: "Country",
             city: "City",
             isp: "Provider",
-            vpn: "VPN / Anonymity",
             risk: "Security Risk",
+
             risk_low: "LOW – everything looks good 👍",
             risk_mid: "MEDIUM – review recommended ⚠️",
-            risk_high: "HIGH – risky IP / VPN / datacenter 🚨",
+            risk_high: "HIGH – risky IP / bad reputation 🚨",
+
             anon: "Anonymous mode – Your real identity is hidden.",
+
             device: "Device",
             browser: "Browser",
             close: "Close"
@@ -76,7 +81,7 @@ function detectBrowser() {
     return "Unknown";
 }
 
-// DETECT ISP from any field API may send
+// ISP autodetect (API sometimes sends different fields)
 function detectISP(data) {
     return (
         data.isp ||
@@ -150,36 +155,50 @@ function showModal(html) {
 }
 
 // =======================================================
-// NEW – REALISTIC RISK ENGINE + ANON MODE
+// NEW – REALISTIC RISK ENGINE (trusted ISP safe)
 // =======================================================
 function computeRisk(data, tx) {
 
-    // 1) VPN / TOR / Proxy → anonymní režim
+    const isp = (detectISP(data) || "").toLowerCase();
+
+    // Trusted Czech ISPs – never high risk
+    const trustedProviders = [
+        "poda", "o2", "t-mobile", "vodafone",
+        "upc", "nejtv", "century", "radiolan",
+        "seznam", "cra", "dragon", "uvalnet"
+    ];
+
+    const isTrustedISP = trustedProviders.some(p => isp.includes(p));
+
+    // TOR / VPN / PROXY → anonymní režim
     if (data.tor || data.vpn || data.proxy) {
         return { label: tx.anon, level: "anon" };
     }
 
-    // 2) Datacentrum / hosting = anonymní režim
-    if (data.is_hosting) {
+    // Hosting/datacentrum → ANON pokud ISP je reálný provider
+    if (data.is_hosting && isTrustedISP) {
         return { label: tx.anon, level: "anon" };
     }
 
-    // 3) Špatná reputace = vysoké riziko
+    // Hosting neznámého typu → střední riziko
+    if (data.is_hosting && !isTrustedISP) {
+        return { label: tx.risk_mid, level: "mid" };
+    }
+
+    // Trusted ISP = LOW
+    if (isTrustedISP) {
+        return { label: tx.risk_low, level: "low" };
+    }
+
+    // Standardní risk metrika
+    if (data.risk <= 4) return { label: tx.risk_low, level: "low" };
+    if (data.risk <= 6) return { label: tx.risk_mid, level: "mid" };
+
+    // Špatná reputace IP
     if (data.reputation === "bad") {
         return { label: tx.risk_high, level: "high" };
     }
 
-    // 4) Normální domácí/mobilní IP = nízké riziko
-    if (data.risk <= 4) {
-        return { label: tx.risk_low, level: "low" };
-    }
-
-    // 5) Střední riziko 5–6
-    if (data.risk <= 6) {
-        return { label: tx.risk_mid, level: "mid" };
-    }
-
-    // 6) Jinak vysoké
     return { label: tx.risk_high, level: "high" };
 }
 
@@ -213,7 +232,7 @@ async function runSecurityTest() {
 
     const risk = computeRisk(data, tx);
     const browserPretty = detectBrowser();
-    const detectedISP = detectISP(data);
+    const isp = detectISP(data);
 
     showModal(`
         <h2 style="margin-top:0; margin-bottom:18px; text-align:center;">
@@ -223,7 +242,7 @@ async function runSecurityTest() {
         <b>${tx.ip}:</b> ${safe(data.ip)}<br>
         <b>${tx.country}:</b> ${safe(data.country)}<br>
         <b>${tx.city}:</b> ${safe(data.city)}<br>
-        <b>${tx.isp}:</b> ${safe(detectedISP)}<br><br>
+        <b>${tx.isp}:</b> ${safe(isp)}<br><br>
 
         <b>${tx.risk}:</b> ${risk.label}<br><br>
 
