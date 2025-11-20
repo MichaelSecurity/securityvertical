@@ -32,7 +32,10 @@ function getTexts() {
 
             device: "Zařízení",
             browser: "Prohlížeč",
-            close: "Zavřít"
+            close: "Zavřít",
+
+            // 🔥 doplněno tlačítko
+            more: "Chcete vědět víc?"
         },
 
         en: {
@@ -52,7 +55,33 @@ function getTexts() {
 
             device: "Device",
             browser: "Browser",
-            close: "Close"
+            close: "Close",
+
+            // 🔥 doplněno tlačítko
+            more: "Learn more?"
+        },
+
+        de: {
+            loading: "Sicherheitsprüfung läuft…",
+            title: "🔍 Ergebnis der Sicherheitsprüfung",
+            ip: "IP-Adresse",
+            country: "Land",
+            city: "Stadt",
+            isp: "Provider",
+            risk: "Sicherheitsrisiko",
+
+            risk_low: "NIEDRIG – alles in Ordnung 👍",
+            risk_mid: "MITTEL – Überprüfung empfohlen ⚠️",
+            risk_high: "HOCH – riskante IP / schlechte Reputation 🚨",
+
+            anon: "Anonymmodus – Ihre wahre Identität ist verborgen.",
+
+            device: "Gerät",
+            browser: "Browser",
+            close: "Schließen",
+
+            // 🔥 doplněno tlačítko
+            more: "Mehr erfahren?"
         }
     };
 
@@ -81,7 +110,6 @@ function detectBrowser() {
     return "Unknown";
 }
 
-// ISP autodetect (API sometimes sends different fields)
 function detectISP(data) {
     return (
         data.isp ||
@@ -155,7 +183,7 @@ function showModal(html) {
 }
 
 // =======================================================
-// NEW – REALISTIC RISK ENGINE (trusted ISP safe)
+// RISK ENGINE
 // =======================================================
 function computeRisk(data, tx) {
 
@@ -169,28 +197,26 @@ function computeRisk(data, tx) {
 
     const isTrustedISP = trustedProviders.some(p => isp.includes(p));
 
-    if (data.tor || data.vpn || data.proxy) {
+    if (data.tor || data.vpn || data.proxy)
         return { label: tx.anon, level: "anon" };
-    }
 
-    if (data.is_hosting && isTrustedISP) {
+    if (data.is_hosting && isTrustedISP)
         return { label: tx.anon, level: "anon" };
-    }
 
-    if (data.is_hosting && !isTrustedISP) {
+    if (data.is_hosting && !isTrustedISP)
         return { label: tx.risk_mid, level: "mid" };
-    }
 
-    if (isTrustedISP) {
+    if (isTrustedISP)
         return { label: tx.risk_low, level: "low" };
-    }
 
-    if (data.risk <= 4) return { label: tx.risk_low, level: "low" };
-    if (data.risk <= 6) return { label: tx.risk_mid, level: "mid" };
+    if (data.risk <= 4)
+        return { label: tx.risk_low, level: "low" };
 
-    if (data.reputation === "bad") {
+    if (data.risk <= 6)
+        return { label: tx.risk_mid, level: "mid" };
+
+    if (data.reputation === "bad")
         return { label: tx.risk_high, level: "high" };
-    }
 
     return { label: tx.risk_high, level: "high" };
 }
@@ -242,7 +268,7 @@ async function runSecurityTest() {
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
         <b>${tx.browser}:</b> ${browserPretty}<br><br>
 
-        <!-- TLAČÍTKO CHCETE VĚDĚT VÍC? NAD ZAVŘÍT -->
+        <!-- TLAČÍTKO – NYNÍ DYNAMICKÉ PODLE JAZYKA -->
         <div style="text-align:center; margin-bottom:15px;">
             <button id="deep-btn" style="
                 background:#ffd600;
@@ -253,7 +279,7 @@ async function runSecurityTest() {
                 font-weight:bold;
                 cursor:pointer;
                 margin-bottom:10px;
-            ">Chcete vědět víc?</button>
+            ">${tx.more}</button>
         </div>
 
         <!-- ZAVŘÍT -->
