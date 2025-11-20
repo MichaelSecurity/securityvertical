@@ -1,10 +1,10 @@
 // =======================================================
-// SecurityVertical – FINAL SAFE VERSION
+// SecurityVertical – FINAL MULTI-LANGUAGE SAFE VERSION
 // Trusted ISP → LOW, hosting → ANON, VPN/TOR → ANON
-// No bullshit false positives
+// Zero bullshit dvořák-riziko
 // =======================================================
 
-console.log("SecurityVertical – FINAL SAFE VERSION loaded");
+console.log("SecurityVertical – FINAL MULTI VERSION loaded");
 
 // =======================================================
 // 🌍 Language dictionary
@@ -29,13 +29,17 @@ function getTexts() {
             risk_high: "VYSOKÉ – riziková IP / útok / špatná reputace 🚨",
 
             anon: "Anonymní režim – Vaše skutečná identita je skrytá.",
-
             device: "Zařízení",
             browser: "Prohlížeč",
             close: "Zavřít",
 
-            // 🔥 doplněno tlačítko
-            more: "Chcete vědět víc?"
+            more: "Chcete vědět víc?",
+            audit_title: "Pokročilý bezpečnostní audit",
+            audit_desc: "Tento audit zkontroluje:",
+            audit_price: "Cena: 49 Kč",
+            audit_btn: "Začít pokročilý audit",
+            audit_wait: "Tato funkce bude aktivní v další verzi.",
+            audit_prep: "Právě připravujeme napojení na bezpečnostní databáze."
         },
 
         en: {
@@ -52,13 +56,17 @@ function getTexts() {
             risk_high: "HIGH – risky IP / bad reputation 🚨",
 
             anon: "Anonymous mode – Your real identity is hidden.",
-
             device: "Device",
             browser: "Browser",
             close: "Close",
 
-            // 🔥 doplněno tlačítko
-            more: "Learn more?"
+            more: "Learn more?",
+            audit_title: "Advanced Security Audit",
+            audit_desc: "This audit checks:",
+            audit_price: "Price: €2",
+            audit_btn: "Start advanced audit",
+            audit_wait: "This feature will be active in the next version.",
+            audit_prep: "We are preparing database integrations."
         },
 
         de: {
@@ -67,21 +75,52 @@ function getTexts() {
             ip: "IP-Adresse",
             country: "Land",
             city: "Stadt",
-            isp: "Provider",
+            isp: "Anbieter",
             risk: "Sicherheitsrisiko",
 
             risk_low: "NIEDRIG – alles in Ordnung 👍",
             risk_mid: "MITTEL – Überprüfung empfohlen ⚠️",
             risk_high: "HOCH – riskante IP / schlechte Reputation 🚨",
 
-            anon: "Anonymmodus – Ihre wahre Identität ist verborgen.",
-
+            anon: "Anonymmodus – Ihre Identität ist verborgen.",
             device: "Gerät",
             browser: "Browser",
             close: "Schließen",
 
-            // 🔥 doplněno tlačítko
-            more: "Mehr erfahren?"
+            more: "Mehr erfahren?",
+            audit_title: "Erweiterter Sicherheitsaudit",
+            audit_desc: "Dieser Audit prüft:",
+            audit_price: "Preis: 2 €",
+            audit_btn: "Erweiterten Audit starten",
+            audit_wait: "Diese Funktion wird in der nächsten Version aktiviert.",
+            audit_prep: "Wir integrieren Sicherheitsdatenbanken."
+        },
+
+        pl: {
+            loading: "Trwa kontrola bezpieczeństwa…",
+            title: "🔍 Wynik kontroli bezpieczeństwa",
+            ip: "Adres IP",
+            country: "Kraj",
+            city: "Miasto",
+            isp: "Dostawca",
+            risk: "Ryzyko bezpieczeństwa",
+
+            risk_low: "NISKIE – wszystko w porządku 👍",
+            risk_mid: "ŚREDNIE – zalecana weryfikacja ⚠️",
+            risk_high: "WYSOKIE – ryzykowne IP / zła reputacja 🚨",
+
+            anon: "Tryb anonimowy – prawdziwa tożsamość ukryta.",
+            device: "Urządzenie",
+            browser: "Przeglądarka",
+            close: "Zamknij",
+
+            more: "Dowiedz się więcej",
+            audit_title: "Zaawansowany audyt bezpieczeństwa",
+            audit_desc: "Ten audyt sprawdzi:",
+            audit_price: "Cena: 10 PLN",
+            audit_btn: "Rozpocznij zaawansowany audyt",
+            audit_wait: "Funkcja będzie aktywna w kolejnej wersji.",
+            audit_prep: "Trwa integracja baz danych."
         }
     };
 
@@ -95,18 +134,15 @@ const safe = v => v ? v : "—";
 
 function detectBrowser() {
     const ua = navigator.userAgent;
-
     if (ua.includes("CriOS")) return "Chrome (iOS)";
     if (ua.includes("FxiOS")) return "Firefox (iOS)";
     if (ua.includes("EdgiOS")) return "Edge (iOS)";
     if (ua.includes("OPiOS")) return "Opera (iOS)";
-
     if (ua.includes("Chrome") && !ua.includes("Safari")) return "Chrome";
     if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
     if (ua.includes("Firefox")) return "Firefox";
     if (ua.includes("Edg")) return "Edge";
     if (ua.includes("OPR")) return "Opera";
-
     return "Unknown";
 }
 
@@ -169,7 +205,7 @@ function showModal(html) {
 
     wrap.innerHTML = `
         <div style="
-            width:100%; max-width:450px;
+            width:100%; max-width:460px;
             background:#111; color:#eee;
             padding:28px; border-radius:14px;
             font-family:Arial; line-height:1.55;
@@ -183,7 +219,7 @@ function showModal(html) {
 }
 
 // =======================================================
-// RISK ENGINE
+// Risk engine
 // =======================================================
 function computeRisk(data, tx) {
 
@@ -195,25 +231,22 @@ function computeRisk(data, tx) {
         "seznam", "cra", "dragon", "uvalnet"
     ];
 
-    const isTrustedISP = trustedProviders.some(p => isp.includes(p));
+    const isTrusted = trustedProviders.some(p => isp.includes(p));
 
     if (data.tor || data.vpn || data.proxy)
         return { label: tx.anon, level: "anon" };
 
-    if (data.is_hosting && isTrustedISP)
+    if (data.is_hosting && isTrusted)
         return { label: tx.anon, level: "anon" };
 
-    if (data.is_hosting && !isTrustedISP)
+    if (data.is_hosting)
         return { label: tx.risk_mid, level: "mid" };
 
-    if (isTrustedISP)
+    if (isTrusted)
         return { label: tx.risk_low, level: "low" };
 
-    if (data.risk <= 4)
-        return { label: tx.risk_low, level: "low" };
-
-    if (data.risk <= 6)
-        return { label: tx.risk_mid, level: "mid" };
+    if (data.risk <= 4) return { label: tx.risk_low, level: "low" };
+    if (data.risk <= 6) return { label: tx.risk_mid, level: "mid" };
 
     if (data.reputation === "bad")
         return { label: tx.risk_high, level: "high" };
@@ -222,7 +255,7 @@ function computeRisk(data, tx) {
 }
 
 // =======================================================
-// MAIN
+// MAIN TEST
 // =======================================================
 async function runSecurityTest() {
 
@@ -254,9 +287,7 @@ async function runSecurityTest() {
     const isp = detectISP(data);
 
     showModal(`
-        <h2 style="margin-top:0; margin-bottom:18px; text-align:center;">
-            ${tx.title}
-        </h2>
+        <h2 style="margin-top:0; text-align:center;">${tx.title}</h2>
 
         <b>${tx.ip}:</b> ${safe(data.ip)}<br>
         <b>${tx.country}:</b> ${safe(data.country)}<br>
@@ -268,7 +299,7 @@ async function runSecurityTest() {
         <b>${tx.device}:</b> ${safe(data.platform)}<br>
         <b>${tx.browser}:</b> ${browserPretty}<br><br>
 
-        <!-- TLAČÍTKO – NYNÍ DYNAMICKÉ PODLE JAZYKA -->
+        <!-- BUTTON → MORE INFO -->
         <div style="text-align:center; margin-bottom:15px;">
             <button id="deep-btn" style="
                 background:#ffd600;
@@ -282,7 +313,7 @@ async function runSecurityTest() {
             ">${tx.more}</button>
         </div>
 
-        <!-- ZAVŘÍT -->
+        <!-- CLOSE -->
         <div style="text-align:center;">
             <button onclick="document.getElementById('sv-modal').remove()"
                 style="
@@ -297,56 +328,61 @@ async function runSecurityTest() {
 }
 
 // =======================================================
-// MODAL PLACENÉ VERZE
+// PAID AUDIT MODAL
 // =======================================================
 document.addEventListener("click", (e) => {
     if (e.target.id === "deep-btn") {
-      showModal(`
-        <h2 style="text-align:center;">Pokročilý bezpečnostní audit</h2>
-        <p>Tento audit zkontroluje:</p>
-        <ul>
-          <li>Blacklisty (30+ bezpečnostních databází)</li>
-          <li>Zranitelné porty</li>
-          <li>Historické incidenty IP</li>
-          <li>Rizikovost poskytovatele</li>
-          <li>Úniky dat (DNS/WebRTC/IPv6)</li>
-        </ul>
 
-        <p><b>Cena: 49 Kč</b></p>
+        const tx = getTexts();
 
-        <div style="text-align:center;margin-top:20px;">
-          <button onclick="startDeepScan()" style="
-              padding:12px 26px;
-              background:#ffd600;
-              border:none;
-              border-radius:10px;
-              font-weight:bold;
-              cursor:pointer;
-          ">Začít pokročilý audit</button>
-        </div>
-      `);
+        showModal(`
+            <h2 style="text-align:center;">${tx.audit_title}</h2>
+
+            <p>${tx.audit_desc}</p>
+            <ul>
+                <li>Blacklisty / Incidentní databáze</li>
+                <li>Zranitelné porty</li>
+                <li>Historické útoky</li>
+                <li>Reputace poskytovatele</li>
+                <li>Úniky DNS / WebRTC / IPv6</li>
+            </ul>
+
+            <p><b>${tx.audit_price}</b></p>
+
+            <div style="text-align:center;margin-top:20px;">
+                <button onclick="startDeepScan()" style="
+                    padding:12px 26px;
+                    background:#ffd600;
+                    border:none;
+                    border-radius:10px;
+                    font-weight:bold;
+                    cursor:pointer;
+                ">${tx.audit_btn}</button>
+            </div>
+        `);
     }
 });
 
 // =======================================================
-// PLACEHOLDER PRO BUDOUCÍ PLACENOU FUNKCI
+// PLACEHOLDER – next version
 // =======================================================
 function startDeepScan() {
-    showModal(`
-      <h2 style="text-align:center;">Pokročilý audit</h2>
-      <p>🔧 Tato funkce bude aktivní v další verzi.</p>
-      <p>Právě připravujeme napojení na bezpečnostní databáze.</p>
+    const tx = getTexts();
 
-      <div style="text-align:center;margin-top:20px;">
-        <button onclick="document.getElementById('sv-modal').remove()"
-            style="
-              padding:12px 26px;
-              background:#ccc;
-              border:none;
-              border-radius:10px;
-              font-weight:bold;
-              cursor:pointer;
-        ">Zavřít</button>
-      </div>
+    showModal(`
+        <h2 style="text-align:center;">${tx.audit_title}</h2>
+        <p>🔧 ${tx.audit_wait}</p>
+        <p>${tx.audit_prep}</p>
+
+        <div style="text-align:center;margin-top:20px;">
+            <button onclick="document.getElementById('sv-modal').remove()" style="
+                padding:12px 26px;
+                background:#ccc;
+                border:none;
+                border-radius:10px;
+                font-weight:bold;
+                cursor:pointer;
+            ">${tx.close}</button>
+        </div>
     `);
 }
