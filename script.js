@@ -1,7 +1,7 @@
 // =======================================================
 // SecurityVertical – FINAL MULTI-LANGUAGE SAFE VERSION
 // Trusted ISP → LOW, hosting → ANON, VPN/TOR → ANON
-// + REAL DATA z IPQS (deep scan)
+// Backend: IPQualityScore IP Reputation (reálná data)
 // =======================================================
 
 console.log("SecurityVertical – FINAL MULTI VERSION loaded");
@@ -43,16 +43,17 @@ function getTexts() {
       audit_title: "Pokročilý bezpečnostní audit",
       audit_desc: "Tento audit zkontroluje:",
       audit_items: [
-        "Blacklisty / incidentní databáze",
-        "Zranitelné porty",
-        "Historické útoky",
-        "Reputace poskytovatele",
-        "Úniky DNS / WebRTC / IPv6"
+        "Reputaci IP adresy a skóre rizika",
+        "Proxy / VPN / TOR připojení",
+        "Typ připojení (rezidenční / datacentrum)",
+        "Historii zneužití a automatizované útoky",
+        "Geolokační a síťové parametry (ISP, ASN, host, časová zóna)"
       ],
       audit_price: "Cena: 49 Kč",
       audit_btn: "Začít pokročilý audit",
       audit_wait: "Audituje… čekejte prosím…",
-      audit_prep: "Probíhá analýza a vyhodnocení bezpečnostních parametrů.",
+      audit_prep:
+        "Probíhá analýza reputace IP adresy a bezpečnostních parametrů.",
 
       // deep-scan labels
       score_label: "Skóre",
@@ -88,16 +89,16 @@ function getTexts() {
       audit_title: "Advanced Security Audit",
       audit_desc: "This audit checks:",
       audit_items: [
-        "Blacklists / incident databases",
-        "Vulnerable ports",
-        "Historical attacks",
-        "Provider reputation",
-        "DNS / WebRTC / IPv6 leaks"
+        "IP reputation & fraud score",
+        "Proxy / VPN / TOR status",
+        "Connection type (residential / data center)",
+        "Recent abuse & automated attack patterns",
+        "Geo & network parameters (ISP, ASN, host, timezone)"
       ],
       audit_price: "Price: €2",
       audit_btn: "Start advanced audit",
       audit_wait: "Running audit… please wait…",
-      audit_prep: "Analyzing network and security parameters.",
+      audit_prep: "Analyzing IP reputation and security parameters.",
 
       score_label: "Score",
       leaks_label: "Leaks",
@@ -132,16 +133,17 @@ function getTexts() {
       audit_title: "Erweiterter Sicherheitsaudit",
       audit_desc: "Dieser Audit prüft:",
       audit_items: [
-        "Blacklists / Incident-Datenbanken",
-        "Verwundbare Ports",
-        "Historische Angriffe",
-        "Provider-Reputation",
-        "DNS / WebRTC / IPv6 Leaks"
+        "IP-Reputation & Fraud Score",
+        "Proxy / VPN / TOR-Verbindungen",
+        "Verbindungstyp (residential / data center)",
+        "Kürzliche Missbrauchsaktivität & Bots",
+        "Geo- & Netzwerkparameter (ISP, ASN, Host, Zeitzone)"
       ],
       audit_price: "Preis: 2 €",
       audit_btn: "Erweiterten Audit starten",
       audit_wait: "Audit läuft… bitte warten…",
-      audit_prep: "Analyse der Sicherheitsparameter wird durchgeführt.",
+      audit_prep:
+        "Analyse der IP-Reputation und sicherheitsrelevanten Parameter.",
 
       score_label: "Punktzahl",
       leaks_label: "Leaks",
@@ -176,16 +178,16 @@ function getTexts() {
       audit_title: "Zaawansowany audyt bezpieczeństwa",
       audit_desc: "Ten audyt sprawdzi:",
       audit_items: [
-        "Blacklisty / bazy incydentów",
-        "Wrażliwe porty",
-        "Historyczne ataki",
-        "Reputacja dostawcy",
-        "Wycieki DNS / WebRTC / IPv6"
+        "Reputację IP i wynik ryzyka",
+        "Proxy / VPN / TOR",
+        "Typ połączenia (mieszkaniowe / data center)",
+        "Niedawne nadużycia i ruch botów",
+        "Parametry geolokacyjne i sieciowe (ISP, ASN, host, strefa czasowa)"
       ],
       audit_price: "Cena: 10 PLN",
       audit_btn: "Rozpocznij zaawansowany audyt",
       audit_wait: "Trwa audyt… proszę czekać…",
-      audit_prep: "Trwa analiza parametrów bezpieczeństwa.",
+      audit_prep: "Trwa analiza reputacji IP i parametrów bezpieczeństwa.",
 
       score_label: "Wynik",
       leaks_label: "Wycieki",
@@ -220,16 +222,17 @@ function getTexts() {
       audit_title: "Auditoría avanzada de seguridad",
       audit_desc: "Esta auditoría comprueba:",
       audit_items: [
-        "Listas negras / bases de incidentes",
-        "Puertos potencialmente vulnerables",
-        "Historial de ataques asociados a la IP",
-        "Reputación del proveedor",
-        "Fugas de DNS / WebRTC / IPv6"
+        "Reputación de la IP y puntuación de fraude",
+        "Proxy / VPN / TOR",
+        "Tipo de conexión (residencial / centro de datos)",
+        "Abuso reciente y tráfico automatizado",
+        "Parámetros de red y geolocalización (ISP, ASN, host, zona horaria)"
       ],
       audit_price: "Precio: 2 €",
       audit_btn: "Iniciar auditoría avanzada",
       audit_wait: "Ejecutando auditoría… espera, por favor…",
-      audit_prep: "Analizando parámetros de red y seguridad.",
+      audit_prep:
+        "Analizando reputación de IP y parámetros de seguridad de la conexión.",
 
       score_label: "Puntuación",
       leaks_label: "Fugas",
@@ -264,16 +267,17 @@ function getTexts() {
       audit_title: "Audit de sécurité avancé",
       audit_desc: "Cet audit vérifie :",
       audit_items: [
-        "Listes noires / bases d’incidents",
-        "Ports potentiellement vulnérables",
-        "Historique d’attaques liés à l’IP",
-        "Réputation du fournisseur",
-        "Fuites DNS / WebRTC / IPv6"
+        "Réputation IP & score de fraude",
+        "Proxy / VPN / TOR",
+        "Type de connexion (résidentiel / data center)",
+        "Abus récents & trafic automatisé",
+        "Paramètres réseau & géolocalisation (FAI, ASN, hôte, fuseau horaire)"
       ],
       audit_price: "Prix : 2 €",
       audit_btn: "Lancer l’audit avancé",
       audit_wait: "Audit en cours… veuillez patienter…",
-      audit_prep: "Analyse des paramètres réseau et de sécurité.",
+      audit_prep:
+        "Analyse de la réputation IP et des paramètres de sécurité réseau.",
 
       score_label: "Score",
       leaks_label: "Fuites",
@@ -283,7 +287,8 @@ function getTexts() {
       no_incidents: "Aucun incident enregistré",
       yes: "OUI",
       no: "NON",
-      error_generic: "Erreur – l’audit n’a pas pu être mené à bien."
+      error_generic:
+        "Erreur – l’audit n’a pas pu être mené à bien."
     },
 
     ptbr: {
@@ -308,16 +313,17 @@ function getTexts() {
       audit_title: "Auditoria avançada de segurança",
       audit_desc: "Esta auditoria analisa:",
       audit_items: [
-        "Listas de bloqueio / bases de incidentes",
-        "Portas potencialmente vulneráveis",
-        "Histórico de ataques associados ao IP",
-        "Reputação do provedor de acesso",
-        "Vazamentos de DNS / WebRTC / IPv6"
+        "Reputação do IP e pontuação de fraude",
+        "Proxy / VPN / TOR",
+        "Tipo de conexão (residencial / data center)",
+        "Abusos recentes e tráfego automatizado",
+        "Parâmetros de rede e geolocalização (ISP, ASN, host, fuso horário)"
       ],
       audit_price: "Preço: R$ 9",
       audit_btn: "Iniciar auditoria avançada",
       audit_wait: "Executando auditoria… aguarde…",
-      audit_prep: "Analisando parâmetros de rede e segurança.",
+      audit_prep:
+        "Analisando reputação do IP e parâmetros de segurança da conexão.",
 
       score_label: "Pontuação",
       leaks_label: "Vazamentos",
@@ -327,7 +333,8 @@ function getTexts() {
       no_incidents: "Nenhum incidente registrado",
       yes: "SIM",
       no: "NÃO",
-      error_generic: "Erro – não foi possível concluir a auditoria."
+      error_generic:
+        "Erro – não foi possível concluir a auditoria."
     }
   };
 
@@ -377,14 +384,12 @@ function showLoader(text) {
   const div = document.createElement("div");
   div.id = "sv-loader";
   div.style = `
-    position: fixed; inset: 0;
+    position: fixed; top:0; left:0;
     width:100vw; height:100vh;
     background: rgba(0,0,0,0.6);
     z-index:999998;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px; color:white; font-family:Arial;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; color:white; font-family:Arial, sans-serif;
     text-align:center;
     padding:0 20px;
     box-sizing:border-box;
@@ -399,7 +404,7 @@ function hideLoader() {
 }
 
 // =======================================================
-// Modal (vystředěný i na mobilu)
+// Modal – vycentrován i na mobilu
 // =======================================================
 function showModal(html) {
   const old = document.getElementById("sv-modal");
@@ -408,29 +413,24 @@ function showModal(html) {
   const wrap = document.createElement("div");
   wrap.id = "sv-modal";
   wrap.style = `
-    position: fixed; inset: 0;
+    position: fixed; top:0; left:0;
     width:100vw; height:100vh;
     background: rgba(0,0,0,0.65);
     z-index:999999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px 12px;
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
     box-sizing:border-box;
   `;
 
   wrap.innerHTML = `
     <div style="
-      width:100%;
-      max-width:460px;
+      width:100%; max-width:460px;
       max-height:90vh;
       overflow-y:auto;
       background:#111; color:#eee;
-      padding:28px;
-      border-radius:14px;
-      font-family:Arial; line-height:1.55;
+      padding:28px; border-radius:14px;
+      font-family:Arial, sans-serif; line-height:1.55;
       box-shadow:0 0 25px rgba(0,0,0,0.45);
-      box-sizing:border-box;
     ">
       ${html}
     </div>
@@ -440,7 +440,7 @@ function showModal(html) {
 }
 
 // =======================================================
-// Risk engine
+// Risk engine – pracuje s IPQS fraud_score + flags
 // =======================================================
 function computeRisk(data, tx) {
   const isp = (detectISP(data) || "").toLowerCase();
@@ -462,20 +462,27 @@ function computeRisk(data, tx) {
 
   const isTrusted = trustedProviders.some((p) => isp.includes(p));
 
+  const fraudScore =
+    typeof data.fraud_score === "number" ? data.fraud_score : 0;
+
+  // Primárně anonymita / hosting
   if (data.tor || data.vpn || data.proxy)
     return { label: tx.anon, level: "anon" };
 
   if (data.is_hosting && isTrusted)
     return { label: tx.anon, level: "anon" };
 
-  if (data.is_hosting) return { label: tx.risk_mid, level: "mid" };
+  if (data.is_hosting)
+    return { label: tx.risk_mid, level: "mid" };
 
-  if (isTrusted) return { label: tx.risk_low, level: "low" };
+  // Pak podle fraud score + důvěryhodný ISP
+  if (isTrusted && fraudScore < 60)
+    return { label: tx.risk_low, level: "low" };
 
-  if (data.risk <= 4) return { label: tx.risk_low, level: "low" };
-  if (data.risk <= 6) return { label: tx.risk_mid, level: "mid" };
+  if (fraudScore < 40) return { label: tx.risk_low, level: "low" };
+  if (fraudScore < 75) return { label: tx.risk_mid, level: "mid" };
 
-  if (data.reputation === "bad")
+  if (data.recent_abuse || data.bot_status || data.reputation === "bad")
     return { label: tx.risk_high, level: "high" };
 
   return { label: tx.risk_high, level: "high" };
@@ -629,46 +636,59 @@ async function startDeepScan() {
     return;
   }
 
-  const leaks = result.leaks || {};
   const yes = tx.yes || "YES";
   const no = tx.no || "NO";
 
-  const leakDNS = leaks.dns ? `⚠️ ${yes}` : `✔️ ${no}`;
-  const leakWebRTC = leaks.webrtc ? `⚠️ ${yes}` : `✔️ ${no}`;
-  const leakIPv6 = leaks.ipv6 ? `⚠️ ${yes}` : `✔️ ${no}`;
+  const proxyStatus = result.proxy ? yes : no;
+  const vpnStatus = result.vpn || result.active_vpn ? yes : no;
+  const torStatus = result.tor || result.active_tor ? yes : no;
 
-  let incident = tx.no_incidents;
-  if (
-    Array.isArray(result.incident_history) &&
-    result.incident_history.length > 0
-  ) {
-    const first = result.incident_history[0];
-    incident = `${safe(first.year)} – ${safe(first.type)}`;
-  } else if (result.abuse_velocity || result.recent_abuse) {
-    // fallback na text z backendu
-    const year = new Date().getFullYear();
-    incident = `${year} – ${safe(
-      result.abuse_velocity || "Recent abuse activity detected"
-    )}`;
-  }
+  const recentAbuse = result.recent_abuse ? yes : no;
+  const botStatus = result.bot_status ? yes : no;
+  const crawlerStatus = result.is_crawler ? yes : no;
+  const mobileStatus = result.mobile ? yes : no;
+
+  const score =
+    typeof result.fraud_score === "number"
+      ? `${result.fraud_score}/100`
+      : "—";
 
   showModal(`
     <h2 style="text-align:center;">${tx.audit_title}</h2>
 
     <p><b>${tx.ip}:</b> ${safe(result.ip)}</p>
-    <p><b>${tx.score_label}:</b> ${safe(result.score)}/100</p>
+    <p><b>${tx.score_label}:</b> ${score}</p>
     <br>
 
-    <p><b>${tx.leaks_label}:</b></p>
-    <ul>
-      <li>DNS: ${leakDNS}</li>
-      <li>WebRTC: ${leakWebRTC}</li>
-      <li>IPv6: ${leakIPv6}</li>
-    </ul>
+    <p><b>Geo:</b> ${safe(result.city)}, ${safe(
+    result.region
+  )}, ${safe(result.country_code)}</p>
+    <p><b>ISP / ASN:</b> ${safe(result.isp)}${
+    result.asn ? ` (ASN: ${safe(result.asn)})` : ""
+  }</p>
+    <p><b>Host:</b> ${safe(result.host)}</p>
 
-    <p><b>${tx.provider_rep_label}:</b> ${safe(result.provider_risk)}</p>
-    <p><b>${tx.incidents_label}:</b> ${incident}</p>
-    <p><b>${tx.blacklists_label}:</b> ${safe(result.blacklists_hit)} / 32</p>
+    <p><b>Proxy / VPN / TOR:</b> proxy: ${proxyStatus},
+      vpn: ${vpnStatus}, tor: ${torStatus}</p>
+
+    <p><b>${tx.provider_rep_label}:</b> ${safe(
+    result.connection_type
+  )}, abuse_velocity: ${safe(result.abuse_velocity)}</p>
+
+    <p><b>Reputation flags:</b>
+      recent_abuse: ${recentAbuse},
+      bot_status: ${botStatus}</p>
+
+    <p><b>Device flags:</b>
+      mobile: ${mobileStatus},
+      crawler: ${crawlerStatus}</p>
+
+    <p><b>Timezone:</b> ${safe(result.timezone)}</p>
+    <p><b>GPS:</b> ${safe(result.latitude)}, ${safe(
+    result.longitude
+  )}</p>
+
+    <p><b>Request ID:</b> ${safe(result.request_id)}</p>
 
     <div style="text-align:center;margin-top:20px;">
       <button onclick="document.getElementById('sv-modal').remove()" style="
