@@ -1,6 +1,6 @@
 // =======================================================
 // SecurityVertical – FINAL STABLE MULTI-LANGUAGE VERSION
-// With ANON MODE message & no false positives
+// With ANON MODE message, fixed ISP detection & no false positives
 // =======================================================
 
 console.log("SecurityVertical – CLEAN STABLE version loaded");
@@ -48,42 +48,6 @@ function getTexts() {
             device: "Device",
             browser: "Browser",
             close: "Close"
-        },
-
-        de: {
-            loading: "Sicherheitsprüfung läuft…",
-            title: "🔍 Ergebnis der Sicherheitsprüfung",
-            ip: "IP Adresse",
-            country: "Land",
-            city: "Stadt",
-            isp: "Anbieter",
-            vpn: "VPN / Anonymität",
-            risk: "Sicherheitsrisiko",
-            risk_low: "NIEDRIG – alles in Ordnung 👍",
-            risk_mid: "MITTEL – Überprüfung empfohlen ⚠️",
-            risk_high: "HOCH – riskante IP / VPN / Rechenzentrum 🚨",
-            anon: "Anonymmodus – Ihre wahre Identität ist verborgen.",
-            device: "Gerät",
-            browser: "Browser",
-            close: "Schließen"
-        },
-
-        pl: {
-            loading: "Trwa kontrola bezpieczeństwa…",
-            title: "🔍 Wynik kontroli bezpieczeństwa",
-            ip: "Adres IP",
-            country: "Kraj",
-            city: "Miasto",
-            isp: "Dostawca",
-            vpn: "VPN / Anonimowość",
-            risk: "Ryzyko bezpieczeństwa",
-            risk_low: "NISKIE – wszystko w porządku 👍",
-            risk_mid: "ŚREDNIE – zalecana weryfikacja ⚠️",
-            risk_high: "WYSOKIE – ryzykowne IP / VPN / centrum danych 🚨",
-            anon: "Tryb anonimowy – Twoja prawdziwa tożsamość jest ukryta.",
-            device: "Urządzenie",
-            browser: "Przeglądarka",
-            close: "Zamknij"
         }
     };
 
@@ -110,6 +74,20 @@ function detectBrowser() {
     if (ua.includes("OPR")) return "Opera";
 
     return "Unknown";
+}
+
+// DETECT ISP from any field API may send
+function detectISP(data) {
+    return (
+        data.isp ||
+        data.org ||
+        data.organization ||
+        data.company ||
+        data.asname ||
+        data.network ||
+        data.as ||
+        "—"
+    );
 }
 
 // =======================================================
@@ -172,7 +150,7 @@ function showModal(html) {
 }
 
 // =======================================================
-// NEW – REALISTIC RISK ENGINE WITH ANON MODE
+// NEW – REALISTIC RISK ENGINE + ANON MODE
 // =======================================================
 function computeRisk(data, tx) {
 
@@ -235,6 +213,7 @@ async function runSecurityTest() {
 
     const risk = computeRisk(data, tx);
     const browserPretty = detectBrowser();
+    const detectedISP = detectISP(data);
 
     showModal(`
         <h2 style="margin-top:0; margin-bottom:18px; text-align:center;">
@@ -244,7 +223,7 @@ async function runSecurityTest() {
         <b>${tx.ip}:</b> ${safe(data.ip)}<br>
         <b>${tx.country}:</b> ${safe(data.country)}<br>
         <b>${tx.city}:</b> ${safe(data.city)}<br>
-        <b>${tx.isp}:</b> ${safe(data.isp)}<br><br>
+        <b>${tx.isp}:</b> ${safe(detectedISP)}<br><br>
 
         <b>${tx.risk}:</b> ${risk.label}<br><br>
 
