@@ -1,7 +1,7 @@
 // =======================================================
 // SecurityVertical – FINAL MULTI-LANGUAGE SAFE VERSION
 // Trusted ISP → LOW, hosting → ANON, VPN/TOR → ANON
-// Backend: IPQualityScore IP Reputation (reálná data)
+// Backend: ipwho.is + AbuseIPDB + vlastní testy
 // =======================================================
 
 console.log("SecurityVertical – FINAL MULTI VERSION loaded");
@@ -47,7 +47,7 @@ function getTexts() {
         "Proxy / VPN / TOR připojení",
         "Typ připojení (rezidenční / datacentrum)",
         "Historii zneužití a automatizované útoky",
-        "Geolokační a síťové parametry (ISP, ASN, host, časová zóna)"
+        "Geolokační a síťové parametry (ISP, ASN, host, časová zóna)",
       ],
       audit_price: "Cena: 49 Kč",
       audit_btn: "Začít pokročilý audit",
@@ -64,7 +64,7 @@ function getTexts() {
       no_incidents: "Žádné zaznamenané incidenty",
       yes: "ANO",
       no: "NE",
-      error_generic: "Chyba – audit se nepodařilo dokončit."
+      error_generic: "Chyba – audit se nepodařilo dokončit.",
     },
 
     en: {
@@ -93,7 +93,7 @@ function getTexts() {
         "Proxy / VPN / TOR status",
         "Connection type (residential / data center)",
         "Recent abuse & automated attack patterns",
-        "Geo & network parameters (ISP, ASN, host, timezone)"
+        "Geo & network parameters (ISP, ASN, host, timezone)",
       ],
       audit_price: "Price: €2",
       audit_btn: "Start advanced audit",
@@ -108,7 +108,7 @@ function getTexts() {
       no_incidents: "No recorded incidents",
       yes: "YES",
       no: "NO",
-      error_generic: "Error – audit could not be completed."
+      error_generic: "Error – audit could not be completed.",
     },
 
     de: {
@@ -137,7 +137,7 @@ function getTexts() {
         "Proxy / VPN / TOR-Verbindungen",
         "Verbindungstyp (residential / data center)",
         "Kürzliche Missbrauchsaktivität & Bots",
-        "Geo- & Netzwerkparameter (ISP, ASN, Host, Zeitzone)"
+        "Geo- & Netzwerkparameter (ISP, ASN, Host, Zeitzone)",
       ],
       audit_price: "Preis: 2 €",
       audit_btn: "Erweiterten Audit starten",
@@ -153,7 +153,7 @@ function getTexts() {
       no_incidents: "Keine verzeichneten Vorfälle",
       yes: "JA",
       no: "NEIN",
-      error_generic: "Fehler – Audit konnte nicht abgeschlossen werden."
+      error_generic: "Fehler – Audit konnte nicht abgeschlossen werden.",
     },
 
     pl: {
@@ -182,7 +182,7 @@ function getTexts() {
         "Proxy / VPN / TOR",
         "Typ połączenia (mieszkaniowe / data center)",
         "Niedawne nadużycia i ruch botów",
-        "Parametry geolokacyjne i sieciowe (ISP, ASN, host, strefa czasowa)"
+        "Parametry geolokacyjne i sieciowe (ISP, ASN, host, strefa czasowa)",
       ],
       audit_price: "Cena: 10 PLN",
       audit_btn: "Rozpocznij zaawansowany audyt",
@@ -197,7 +197,7 @@ function getTexts() {
       no_incidents: "Brak zarejestrowanych incydentów",
       yes: "TAK",
       no: "NIE",
-      error_generic: "Błąd – nie udało się zakończyć audytu."
+      error_generic: "Błąd – nie udało się zakończyć audytu.",
     },
 
     es: {
@@ -226,7 +226,7 @@ function getTexts() {
         "Proxy / VPN / TOR",
         "Tipo de conexión (residencial / centro de datos)",
         "Abuso reciente y tráfico automatizado",
-        "Parámetros de red y geolocalización (ISP, ASN, host, zona horaria)"
+        "Parámetros de red y geolocalización (ISP, ASN, host, zona horaria)",
       ],
       audit_price: "Precio: 2 €",
       audit_btn: "Iniciar auditoría avanzada",
@@ -242,7 +242,7 @@ function getTexts() {
       no_incidents: "No se han registrado incidentes",
       yes: "SÍ",
       no: "NO",
-      error_generic: "Error – no se ha podido completar la auditoría."
+      error_generic: "Error – no se ha podido completar la auditoría.",
     },
 
     fr: {
@@ -271,7 +271,7 @@ function getTexts() {
         "Proxy / VPN / TOR",
         "Type de connexion (résidentiel / data center)",
         "Abus récents & trafic automatisé",
-        "Paramètres réseau & géolocalisation (FAI, ASN, hôte, fuseau horaire)"
+        "Paramètres réseau & géolocalisation (FAI, ASN, hôte, fuseau horaire)",
       ],
       audit_price: "Prix : 2 €",
       audit_btn: "Lancer l’audit avancé",
@@ -288,7 +288,7 @@ function getTexts() {
       yes: "OUI",
       no: "NON",
       error_generic:
-        "Erreur – l’audit n’a pas pu être mené à bien."
+        "Erreur – l’audit n’a pas pu être mené à bien.",
     },
 
     ptbr: {
@@ -317,7 +317,7 @@ function getTexts() {
         "Proxy / VPN / TOR",
         "Tipo de conexão (residencial / data center)",
         "Abusos recentes e tráfego automatizado",
-        "Parâmetros de rede e geolocalização (ISP, ASN, host, fuso horário)"
+        "Parâmetros de rede e geolocalização (ISP, ASN, host, fuso horário)",
       ],
       audit_price: "Preço: R$ 9",
       audit_btn: "Iniciar auditoria avançada",
@@ -334,8 +334,8 @@ function getTexts() {
       yes: "SIM",
       no: "NÃO",
       error_generic:
-        "Erro – não foi possível concluir a auditoria."
-    }
+        "Erro – não foi possível concluir a auditoria.",
+    },
   };
 
   return t[lang] || t.en;
@@ -440,7 +440,7 @@ function showModal(html) {
 }
 
 // =======================================================
-// Risk engine – pracuje s IPQS fraud_score + flags
+// Risk engine – podle dat z backendu
 // =======================================================
 function computeRisk(data, tx) {
   const isp = (detectISP(data) || "").toLowerCase();
@@ -457,7 +457,7 @@ function computeRisk(data, tx) {
     "seznam",
     "cra",
     "dragon",
-    "uvalnet"
+    "uvalnet",
   ];
 
   const isTrusted = trustedProviders.some((p) => isp.includes(p));
@@ -465,17 +465,14 @@ function computeRisk(data, tx) {
   const fraudScore =
     typeof data.fraud_score === "number" ? data.fraud_score : 0;
 
-  // Primárně anonymita / hosting
   if (data.tor || data.vpn || data.proxy)
     return { label: tx.anon, level: "anon" };
 
   if (data.is_hosting && isTrusted)
     return { label: tx.anon, level: "anon" };
 
-  if (data.is_hosting)
-    return { label: tx.risk_mid, level: "mid" };
+  if (data.is_hosting) return { label: tx.risk_mid, level: "mid" };
 
-  // Pak podle fraud score + důvěryhodný ISP
   if (isTrusted && fraudScore < 60)
     return { label: tx.risk_low, level: "low" };
 
@@ -527,7 +524,9 @@ async function runSecurityTest() {
     <b>${tx.city}:</b> ${safe(data.city)}<br>
     <b>${tx.isp}:</b> ${safe(isp)}<br><br>
 
-    <b>${tx.risk}:</b> ${risk.label}<br><br>
+    <b>${tx.risk}:</b> ${risk.label} (score: ${safe(
+    data.fraud_score
+  )}/100)<br><br>
 
     <b>${tx.device}:</b> ${safe(data.platform)}<br>
     <b>${tx.browser}:</b> ${browserPretty}<br><br>
@@ -640,8 +639,8 @@ async function startDeepScan() {
   const no = tx.no || "NO";
 
   const proxyStatus = result.proxy ? yes : no;
-  const vpnStatus = result.vpn || result.active_vpn ? yes : no;
-  const torStatus = result.tor || result.active_tor ? yes : no;
+  const vpnStatus = result.vpn ? yes : no;
+  const torStatus = result.tor ? yes : no;
 
   const recentAbuse = result.recent_abuse ? yes : no;
   const botStatus = result.bot_status ? yes : no;
@@ -652,6 +651,15 @@ async function startDeepScan() {
     typeof result.fraud_score === "number"
       ? `${result.fraud_score}/100`
       : "—";
+
+  const leaks = result.leaks || {};
+  const leakDNS = leaks.dns ? `⚠️ ${yes}` : `✔️ ${no}`;
+  const leakWebRTC = leaks.webrtc ? `⚠️ ${yes}` : `✔️ ${no}`;
+  const leakIPv6 = leaks.ipv6 ? `⚠️ ${yes}` : `✔️ ${no}`;
+
+  const openPorts = Array.isArray(result.open_ports)
+    ? result.open_ports
+    : [];
 
   showModal(`
     <h2 style="text-align:center;">${tx.audit_title}</h2>
@@ -683,10 +691,37 @@ async function startDeepScan() {
       mobile: ${mobileStatus},
       crawler: ${crawlerStatus}</p>
 
+    <p><b>${tx.leaks_label}:</b></p>
+    <ul>
+      <li>DNS: ${leakDNS}</li>
+      <li>WebRTC: ${leakWebRTC}</li>
+      <li>IPv6: ${leakIPv6}</li>
+    </ul>
+
+    ${
+      openPorts.length
+        ? `<p><b>Open ports:</b></p>
+           <ul>
+             ${openPorts
+               .map(
+                 (p) =>
+                   `<li>${safe(p.port)}/tcp – ${safe(
+                     p.service
+                   )} (${safe(p.risk)})</li>`
+               )
+               .join("")}
+           </ul>`
+        : ""
+    }
+
     <p><b>Timezone:</b> ${safe(result.timezone)}</p>
     <p><b>GPS:</b> ${safe(result.latitude)}, ${safe(
     result.longitude
   )}</p>
+
+    <p><b>Abuse reports:</b> ${safe(
+      result.abuse_total_reports
+    )}, last: ${safe(result.abuse_last_reported_at)}</p>
 
     <p><b>Request ID:</b> ${safe(result.request_id)}</p>
 
